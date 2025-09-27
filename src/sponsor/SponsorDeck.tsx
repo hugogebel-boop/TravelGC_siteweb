@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import hero from "../assets/image.jpg"; // ← image importée depuis src/assets
 
+const FORM_ENDPOINT = "https://formspree.io/f/xeorerdy";
+
 const cx = (...c: Array<string | false | null | undefined>) =>
     c.filter(Boolean).join(" ");
 
@@ -339,9 +341,37 @@ const SlideOffers: React.FC = () => {
 /* ===================== Slide 3 — Contact ===================== */
 const SlideContact: React.FC = () => {
     const [sent, setSent] = useState(false);
-    const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    const [error, setError] = useState<string | null>(null);
+
+    const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
-        setSent(true);
+        setError(null);
+
+        const form = e.currentTarget;
+        const fd = new FormData(form);
+
+        // métadonnées utiles
+        fd.append("_subject", "Nouveau sponsoring — Travel GC");
+        fd.append("page_url", window.location.href);
+
+        try {
+            const res = await fetch(FORM_ENDPOINT, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: fd,
+            });
+
+            if (res.ok) {
+                setSent(true);
+                form.reset();
+            } else {
+                const data = await res.json().catch(() => null);
+                const msg = data?.errors?.[0]?.message || "Impossible d'envoyer le formulaire.";
+                setError(msg);
+            }
+        } catch (_) {
+            setError("Désolé, l’envoi a échoué. Réessayez plus tard.");
+        }
     };
 
     return (
@@ -408,25 +438,45 @@ const SlideContact: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <form onSubmit={onSubmit} className="grid gap-3">
+                        <form onSubmit={onSubmit} className="grid gap-3" noValidate>
+                            {/* Honeypot anti-spam */}
+                            <input name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-sm font-medium">Nom de l'entreprise</label>
-                                    <input name="company" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
+                                    <input
+                                        name="company"
+                                        required
+                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    />
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium">Contact</label>
-                                    <input name="contact" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
+                                    <input
+                                        name="contact"
+                                        required
+                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    />
                                 </div>
                             </div>
+
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-sm font-medium">Email</label>
-                                    <input type="email" name="email" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        required
+                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    />
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium">Type de sponsoring</label>
-                                    <select name="sponsoring_type" className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80">
+                                    <select
+                                        name="sponsoring_type"
+                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    >
                                         <option>Bronze</option>
                                         <option>Argent</option>
                                         <option>Or</option>
@@ -435,15 +485,34 @@ const SlideContact: React.FC = () => {
                                     </select>
                                 </div>
                             </div>
+
                             <div>
                                 <label className="text-sm font-medium">Message</label>
-                                <textarea name="message" rows={4} className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" placeholder="Parlez-nous de vos objectifs…"></textarea>
+                                <textarea
+                                    name="message"
+                                    rows={4}
+                                    className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    placeholder="Parlez-nous de vos objectifs…"
+                                ></textarea>
                             </div>
+
                             <label className="inline-flex items-center gap-2 text-sm">
-                                <input name="consent" type="checkbox" required className="rounded border-emerald-300" />
+                                <input
+                                    name="consent"
+                                    type="checkbox"
+                                    required
+                                    className="rounded border-emerald-300"
+                                />
                                 J'accepte d'être recontacté·e à propos du sponsoring.
                             </label>
-                            <button type="submit" className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}>
+
+                            {/* message d’erreur discret (si besoin) */}
+                            {error && <div className="text-sm text-red-600">{error}</div>}
+
+                            <button
+                                type="submit"
+                                className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}
+                            >
                                 Envoyer
                             </button>
                         </form>
