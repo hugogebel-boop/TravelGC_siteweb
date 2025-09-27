@@ -12,6 +12,7 @@ import {
     Handshake,
     Info,
 } from "lucide-react";
+import hero from "../assets/image.jpg";
 
 const cx = (...c: Array<string | false | null | undefined>) =>
     c.filter(Boolean).join(" ");
@@ -98,13 +99,9 @@ const SlideIntro: React.FC = () => {
                     <div className="relative">
                         <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
                             <img
-                                src="/src/assets/image.jpg" // assure-toi que le fichier s'appelle bien image.webp
+                                src={hero}
                                 alt="Travel GC — aperçu du voyage"
                                 className="h-full w-full object-cover"
-                                onError={(e) => {
-                                    // fallback si l'utilisateur a nommé 'image.wegp' par erreur
-                                    (e.currentTarget as HTMLImageElement).src = "/assets/image.wegp";
-                                }}
                             />
                         </div>
                     </div>
