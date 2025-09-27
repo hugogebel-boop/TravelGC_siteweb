@@ -12,7 +12,7 @@ import {
     Handshake,
     Info,
 } from "lucide-react";
-import hero from "../assets/image.jpg";
+import hero from "../assets/image.jpg"; // ← image importée depuis src/assets
 
 const cx = (...c: Array<string | false | null | undefined>) =>
     c.filter(Boolean).join(" ");
@@ -27,13 +27,10 @@ const brand = {
     },
 };
 
-const SectionCard: React.FC<
-    React.PropsWithChildren<{ className?: string }>
-> = ({ className, children }) => (
-    <div className={cx("rounded-2xl p-6 md:p-8", brand.card, className)}>
-        {children}
-    </div>
-);
+const SectionCard: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
+    className,
+    children,
+}) => <div className={cx("rounded-2xl p-6 md:p-8", brand.card, className)}>{children}</div>;
 
 /* ===================== Slide 1 — Hero ===================== */
 const SlideIntro: React.FC = () => {
@@ -71,7 +68,7 @@ const SlideIntro: React.FC = () => {
                             valorise nos partenaires avec une visibilité moderne et bienveillante.
                         </p>
 
-                        {/* petites bulles (cartes) : qui on est / notre but */}
+                        {/* petites bulles : qui on est / notre but */}
                         <div className="mt-5 grid sm:grid-cols-2 gap-4">
                             <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
                                 <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
@@ -92,17 +89,13 @@ const SlideIntro: React.FC = () => {
                                 </p>
                             </div>
                         </div>
-                        {/* → pas de badges dates/villes en bas, ni de bouton */}
+                        {/* pas de badges/bouton en bas */}
                     </div>
 
-                    {/* Visuel droite : image.webp placée dans /assets */}
+                    {/* Visuel droite : image importée */}
                     <div className="relative">
                         <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
-                            <img
-                                src={hero}
-                                alt="Travel GC — aperçu du voyage"
-                                className="h-full w-full object-cover"
-                            />
+                            <img src={hero} alt="Travel GC — aperçu du voyage" className="h-full w-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -112,124 +105,141 @@ const SlideIntro: React.FC = () => {
 };
 
 /* ===================== Slide 2 — Packs ===================== */
-
-// Prestations (ordre de base)
+/** Prestations = nouvelle liste (style de ton PDF) */
 type Feature = { key: string; label: string };
 const baseFeatures: Feature[] = [
-    { key: "logo_footer", label: "Logo site (footer)" },
-    { key: "logo_slides", label: "Logo sur slides" },
-    { key: "logo_header", label: "Logo header (premium)" },
-    { key: "posts", label: "Posts dédiés" },
-    { key: "stories", label: "Stories dédiées" },
-    { key: "link", label: "Lien cliquable" },
-    { key: "media", label: "Pack photo/vidéo" },
-    { key: "activation", label: "Activation co-brandée" },
-    { key: "exclu", label: "Exclusivité catégorie" },
-    { key: "event", label: "Événement / capsule" },
+    { key: "credits", label: "Crédits" },
+    { key: "flyers", label: "Flyers" },
+    { key: "logo_i", label: "Logo type I" },
+    { key: "salle", label: "Salle de vie" },
+    { key: "presentation", label: "Présentation (Instagram)" },
+    { key: "logo_ii", label: "Logo type II" },
+    { key: "distribution", label: "Distribution" },
+    { key: "drapeau", label: "Drapeau événement" },
+    { key: "pull", label: "Pull (logo)" },
+    { key: "titre_pp", label: "Titre de partenaire principal" },
+    { key: "conference", label: "Conférence (EPFL)" },
 ];
 
-// Descriptions (pour le bloc sous le tableau)
+/** Descriptions (d’après tes captures) */
 const featureDescriptions: Record<string, string> = {
-    logo_footer: "Votre logo apparaît dans le pied de page du site (toutes les pages).",
-    logo_slides: "Logo sur la slide Partenaires et sur nos supports de présentation.",
-    logo_header: "Emplacement premium en haut du site avec lien direct vers votre page.",
-    posts: "Publications dédiées (feed) présentant votre marque et la collaboration.",
-    stories: "Stories dédiées pendant le voyage et aux moments clés.",
-    link: "Lien cliquable vers votre site, fiche ou campagne.",
-    media: "Pack média (photos/vidéos) réutilisables par vos canaux.",
-    activation: "Action terrain/digitale co-brandée (concours, dotation, placement produit…).",
-    exclu: "Exclusivité de catégorie (vous êtes l’unique partenaire de votre secteur).",
-    event: "Présence à un événement ou capsule dédiée après le voyage.",
+    credits:
+        "En tant que sponsor, votre entreprise sera honorée dans toutes nos annonces et remerciements publics.",
+    flyers:
+        "Vos flyers seront soigneusement présentés dans notre salle de vie.",
+    logo_i:
+        "Votre logo figure sur nos affiches d’événements, renforçant votre visibilité sur le campus.",
+    distribution:
+        "Si vous avez des produits, nous les distribuons lors de nos événements.",
+    pull:
+        "Votre logo apparaît sur notre pull de section.",
+    logo_ii:
+        "Votre logo figure sur toutes nos annonces d’événements (affiches & réseaux) et sur le drapeau de l’AEGC.",
+    salle:
+        "Affichage promotionnel dans notre salle de vie (stages, offres, infos entreprise).",
+    presentation:
+        "Publication dédiée à votre entreprise sur notre compte Instagram (@travel__gc).",
+    drapeau:
+        "Bannière/roll-up mise en avant lors de nos événements.",
+    titre_pp:
+        "Mention partenaire principal du Travel GC + remerciements spéciaux pendant les événements.",
+    conference:
+        "Organisation d’une conférence à l’EPFL pour présenter votre entreprise et échanger avec les étudiant·e·s.",
 };
 
+/** Packs + mapping (diagonale : Bronze → Argent → Or → Platine) */
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
 const packs: Pack[] = [
     {
         name: "Bronze",
         price: "CHF 1'000",
         grants: {
-            logo_footer: true,
-            logo_slides: false,
-            logo_header: false,
-            posts: true,
-            stories: false,
-            link: true,
-            media: true,
-            activation: false,
-            exclu: false,
-            event: false,
+            credits: true,
+            flyers: true,
+            logo_i: true,
+            salle: true,
+            presentation: true,
+
+            logo_ii: false,
+            distribution: false,
+            drapeau: false,
+            pull: false,
+            titre_pp: false,
+            conference: false,
         },
     },
     {
         name: "Argent",
         price: "CHF 2'500",
         grants: {
-            logo_footer: true,
-            logo_slides: true,
-            logo_header: false,
-            posts: true,
-            stories: true,
-            link: true,
-            media: true,
-            activation: false,
-            exclu: false,
-            event: false,
+            credits: true,
+            flyers: true,
+            logo_i: true,
+            salle: true,
+            presentation: true,
+
+            logo_ii: true,
+            distribution: true,
+            drapeau: true,
+            pull: false,
+            titre_pp: false,
+            conference: false,
         },
     },
     {
         name: "Or",
         price: "CHF 5'000",
         grants: {
-            logo_footer: true,
-            logo_slides: true,
-            logo_header: true,
-            posts: true,
-            stories: true,
-            link: true,
-            media: true,
-            activation: true,
-            exclu: false,
-            event: false,
+            credits: true,
+            flyers: true,
+            logo_i: true,
+            salle: true,
+            presentation: true,
+
+            logo_ii: true,
+            distribution: true,
+            drapeau: true,
+            pull: true,
+            titre_pp: false,
+            conference: false,
         },
     },
     {
         name: "Platine",
         price: "CHF 7'500",
         grants: {
-            logo_footer: true,
-            logo_slides: true,
-            logo_header: true,
-            posts: true,
-            stories: true,
-            link: true,
-            media: true,
-            activation: true,
-            exclu: true,
-            event: true,
+            credits: true,
+            flyers: true,
+            logo_i: true,
+            salle: true,
+            presentation: true,
+
+            logo_ii: true,
+            distribution: true,
+            drapeau: true,
+            pull: true,
+            titre_pp: true,
+            conference: true,
         },
     },
 ];
 
-// Tri pour créer la “diagonale” : on classe chaque prestation selon le 1er pack qui l’inclut.
-const useDiagonalFeatures = (features: Feature[], packs: Pack[]) => {
-    return useMemo(() => {
-        const packIndex: Record<string, number> = {};
+/** Tri pour créer l’effet “diagonale” : on classe par 1er pack qui l’inclut */
+const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
+    useMemo(() => {
+        const firstIdx: Record<string, number> = {};
         features.forEach((f) => {
-            let first = packs.length; // défaut: jamais offert
+            let i0 = packs.length;
             packs.forEach((p, i) => {
-                if (p.grants[f.key]) first = Math.min(first, i);
+                if (p.grants[f.key]) i0 = Math.min(i0, i);
             });
-            packIndex[f.key] = first;
+            firstIdx[f.key] = i0;
         });
         return [...features].sort((a, b) => {
-            const da = packIndex[a.key];
-            const db = packIndex[b.key];
-            if (da !== db) return da - db; // Bronze d'abord, puis Argent, etc.
-            // en cas d’égalité, garder l’ordre naturel
+            if (firstIdx[a.key] !== firstIdx[b.key]) return firstIdx[a.key] - firstIdx[b.key];
             return features.findIndex((x) => x.key === a.key) - features.findIndex((x) => x.key === b.key);
         });
     }, [features, packs]);
-};
 
 const SlideOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
@@ -238,15 +248,13 @@ const SlideOffers: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Handshake className="size-6 text-emerald-700" />
-                    <h2 id="packs" className="text-xl sm:text-2xl font-semibold">
-                        Packs sponsoring
-                    </h2>
+                    <h2 id="packs" className="text-xl sm:text-2xl font-semibold">Packs sponsoring</h2>
                 </div>
                 <div className="text-sm text-emerald-900/80">Vue diagonale par niveau</div>
             </div>
 
             <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
-                {/* Tableau compact */}
+                {/* Tableau */}
                 <SectionCard>
                     <div className="overflow-x-auto text-sm">
                         <table className="min-w-full">
@@ -254,10 +262,7 @@ const SlideOffers: React.FC = () => {
                                 <tr>
                                     <th className="text-left py-2 pr-3 font-semibold">Prestations</th>
                                     {packs.map((p) => (
-                                        <th
-                                            key={p.name}
-                                            className="px-3 py-2 text-center font-semibold text-xs"
-                                        >
+                                        <th key={p.name} className="px-3 py-2 text-center font-semibold text-xs">
                                             <div>{p.name}</div>
                                             <div className="text-emerald-700 font-bold">{p.price}</div>
                                         </th>
@@ -282,25 +287,40 @@ const SlideOffers: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* petite note sous le tableau */}
+                    <div className="mt-2 text-xs italic text-emerald-900/70">
+                        * Pour plus de précision, voir{" "}
+                        <span className="font-medium">“Détail des contreparties”</span> ci-dessous.
+                    </div>
                 </SectionCard>
 
-                {/* Pourquoi nous sponsoriser à côté du tableau */}
-                <SectionCard className="flex items-start">
-                    <div className="flex items-start gap-2">
-                        <Info className="mt-1 size-5 text-emerald-700" />
-                        <div>
-                            <h3 className="font-semibold">Pourquoi nous sponsoriser ?</h3>
-                            <ul className="mt-2 space-y-2 text-emerald-900/85 text-sm">
-                                <li>🎯 Visibilité utile auprès d’étudiant·e·s & jeunes pros.</li>
-                                <li>📸 Contenus authentiques réutilisables sur vos canaux.</li>
-                                <li>🤝 Flexibilité : packs ou offre sur-mesure selon objectifs.</li>
-                            </ul>
+                {/* Pourquoi nous sponsoriser — version PDF */}
+                <SectionCard className="space-y-4">
+                    <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
+                        Pourquoi nous sponsoriser ?
+                    </div>
+                    <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
+                        <div className="text-center">
+                            Le Travel GC a <b>besoin de vous</b> pour rendre ce voyage
+                            accessible au plus grand nombre d’entre nous !
                         </div>
+                    </div>
+                    <div>
+                        <div className="font-semibold text-lg">Une opportunité pour…</div>
+                        <ul className="mt-3 space-y-2 text-emerald-900/90">
+                            <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
+                            <li>
+                                • Bénéficier de visibilité sur le campus (affiches dans notre salle de vie) et lors de nos
+                                événements (week-end ski GC, stand à Balélec, etc.).
+                            </li>
+                            <li>• Une visibilité garantie avec votre <b>logo sur nos pulls</b> de section.</li>
+                        </ul>
                     </div>
                 </SectionCard>
             </div>
 
-            {/* Détail des contreparties sous le tableau (même ordre) */}
+            {/* Détail des contreparties (même ordre que le tableau) */}
             <SectionCard>
                 <h3 className="font-semibold">Détail des contreparties</h3>
                 <div className="mt-3 grid md:grid-cols-2 gap-4 text-sm text-emerald-900/85">
@@ -317,7 +337,6 @@ const SlideOffers: React.FC = () => {
 };
 
 /* ===================== Slide 3 — Contact ===================== */
-
 const SlideContact: React.FC = () => {
     const [sent, setSent] = useState(false);
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -350,10 +369,7 @@ const SlideContact: React.FC = () => {
                                 <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
                                     <div className="font-medium">Chaimaa Ouchicha</div>
                                     <div className="text-sm opacity-80">Responsable sponsoring</div>
-                                    <a
-                                        className="mt-1 block text-sm underline underline-offset-4"
-                                        href="mailto:chaimaa.ouchicha@epfl.ch"
-                                    >
+                                    <a className="mt-1 block text-sm underline underline-offset-4" href="mailto:chaimaa.ouchicha@epfl.ch">
                                         chaimaa.ouchicha@epfl.ch
                                     </a>
                                     <div className="text-sm mt-1">+41 78 229 84 51</div>
@@ -362,10 +378,7 @@ const SlideContact: React.FC = () => {
                                 <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
                                     <div className="font-medium">Margot Chapalain</div>
                                     <div className="text-sm opacity-80">Présidente</div>
-                                    <a
-                                        className="mt-1 block text-sm underline underline-offset-4"
-                                        href="mailto:margot.chapalain@epfl.ch"
-                                    >
+                                    <a className="mt-1 block text-sm underline underline-offset-4" href="mailto:margot.chapalain@epfl.ch">
                                         margot.chapalain@epfl.ch
                                     </a>
                                 </div>
@@ -376,10 +389,7 @@ const SlideContact: React.FC = () => {
                             <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
                                 Adresse générale
                             </div>
-                            <a
-                                className="mt-2 inline-flex items-center gap-2 text-emerald-800 underline underline-offset-4"
-                                href="mailto:contact@travelgc.ch"
-                            >
+                            <a className="mt-2 inline-flex items-center gap-2 text-emerald-800 underline underline-offset-4" href="mailto:contact@travelgc.ch">
                                 <Mail className="size-4" /> contact@travelgc.ch
                             </a>
                         </div>
@@ -402,37 +412,21 @@ const SlideContact: React.FC = () => {
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-sm font-medium">Nom de l'entreprise</label>
-                                    <input
-                                        name="company"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    />
+                                    <input name="company" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium">Contact</label>
-                                    <input
-                                        name="contact"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    />
+                                    <input name="contact" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
                                 </div>
                             </div>
                             <div className="grid md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-sm font-medium">Email</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    />
+                                    <input type="email" name="email" required className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" />
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium">Type de sponsoring</label>
-                                    <select
-                                        name="sponsoring_type"
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    >
+                                    <select name="sponsoring_type" className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80">
                                         <option>Bronze</option>
                                         <option>Argent</option>
                                         <option>Or</option>
@@ -443,26 +437,13 @@ const SlideContact: React.FC = () => {
                             </div>
                             <div>
                                 <label className="text-sm font-medium">Message</label>
-                                <textarea
-                                    name="message"
-                                    rows={4}
-                                    className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    placeholder="Parlez-nous de vos objectifs…"
-                                ></textarea>
+                                <textarea name="message" rows={4} className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80" placeholder="Parlez-nous de vos objectifs…"></textarea>
                             </div>
                             <label className="inline-flex items-center gap-2 text-sm">
-                                <input
-                                    name="consent"
-                                    type="checkbox"
-                                    required
-                                    className="rounded border-emerald-300"
-                                />
+                                <input name="consent" type="checkbox" required className="rounded border-emerald-300" />
                                 J'accepte d'être recontacté·e à propos du sponsoring.
                             </label>
-                            <button
-                                type="submit"
-                                className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}
-                            >
+                            <button type="submit" className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}>
                                 Envoyer
                             </button>
                         </form>
@@ -474,7 +455,6 @@ const SlideContact: React.FC = () => {
 };
 
 /* ===================== Controller ===================== */
-
 const slides = [
     { key: "intro", node: <SlideIntro /> },
     { key: "offers", node: <SlideOffers /> },
@@ -502,9 +482,7 @@ export default function SponsorDeck() {
                 {/* Header global */}
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                        <div className="size-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">
-                            TG
-                        </div>
+                        <div className="size-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">TG</div>
                         <div>
                             <div className="font-semibold">Travel GC</div>
                             <div className="text-xs text-emerald-900/70">Sponsor Deck — Aperçu</div>
@@ -522,24 +500,13 @@ export default function SponsorDeck() {
 
                 {/* barre de progression */}
                 <div className="mt-4 h-2 bg-emerald-100 rounded-full overflow-hidden">
-                    <motion.div
-                        className="h-full bg-emerald-600"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ type: "spring", stiffness: 120, damping: 20 }}
-                    />
+                    <motion.div className="h-full bg-emerald-600" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ type: "spring", stiffness: 120, damping: 20 }} />
                 </div>
 
-                {/* Slides (pas de position absolute -> pas de coupe) */}
+                {/* Slides */}
                 <div className="mt-6 md:mt-8">
                     <AnimatePresence mode="wait">
-                        <motion.div
-                            key={slides[idx].key}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -16 }}
-                            transition={{ duration: 0.25 }}
-                        >
+                        <motion.div key={slides[idx].key} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.25 }}>
                             {slides[idx].node}
                         </motion.div>
                     </AnimatePresence>
