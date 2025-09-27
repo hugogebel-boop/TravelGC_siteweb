@@ -1,12 +1,18 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Change REPO_NAME below to your GitHub repo name if deploying to GitHub Pages
-const REPO_NAME = process.env.REPO_NAME || ''
+// Ces variables sont injectées par ton workflow GitHub Actions
+const repo = process.env.REPO_NAME ?? ''                 // ex: "TravelGCSponso" ou "username.github.io"
+const isPages = process.env.GITHUB_PAGES === 'true'
+const isUserOrgPage = repo.endsWith('.github.io')        // cas des User/Org Pages (racine du domaine)
 
-// If you deploy to GitHub Pages, set GITHUB_PAGES=true in your workflow
-// and (optionally) REPO_NAME to override the repo folder if needed.
+// Base:
+// - en local/dev: '/'
+// - sur GitHub Pages:
+//    - User/Org Pages: '/'
+//    - Project Pages: '/<repo>/'
 export default defineConfig({
-  plugins: [react()],
-  base: process.env.GITHUB_PAGES === 'true' && REPO_NAME ? `/${REPO_NAME}/` : '/',
+    plugins: [react()],
+    base: isPages ? (isUserOrgPage || !repo ? '/' : `/${repo}/`) : '/',
 })
