@@ -1,8 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import {
-    ChevronLeft,
-    ChevronRight,
     Mail,
     Phone,
     CheckCircle2,
@@ -10,9 +8,10 @@ import {
     Minus,
     Sparkles,
     Handshake,
-    Info,
 } from "lucide-react";
 import hero from "../assets/image.jpg"; // ← image importée depuis src/assets
+import img1 from "../assets/visit_megyeri.jpg";
+import img2 from "../assets/visit_m4.jpg";
 
 const FORM_ENDPOINT = "https://formspree.io/f/xeorerdy";
 
@@ -32,82 +31,137 @@ const brand = {
 const SectionCard: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
     className,
     children,
-}) => <div className={cx("rounded-2xl p-6 md:p-8", brand.card, className)}>{children}</div>;
+}) => (
+    <div className={cx("rounded-2xl p-6 md:p-8", brand.card, className)}>{children}</div>
+);
 
-/* ===================== Slide 1 — Hero ===================== */
-const SlideIntro: React.FC = () => {
-    return (
-        <div className="w-full h-full">
-            <SectionCard className="relative overflow-hidden">
-                {/* blobs doux */}
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6 }}
-                    className="absolute -right-16 -top-16 size-64 rounded-full bg-emerald-200/40 blur-2xl"
-                />
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="absolute -left-10 -bottom-10 size-52 rounded-full bg-teal-200/40 blur-2xl"
-                />
+/* ===================== Section 1 — Intro (réécrite) ===================== */
+const SectionIntro: React.FC = () => (
+    <SectionCard className="relative overflow-hidden">
+        {/* blobs doux */}
+        <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="absolute -right-16 -top-16 size-64 rounded-full bg-emerald-200/40 blur-2xl"
+        />
+        <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="absolute -left-10 -bottom-10 size-52 rounded-full bg-teal-200/40 blur-2xl"
+        />
 
-                <div className="relative grid lg:grid-cols-2 gap-8 items-center">
-                    {/* Texte gauche */}
-                    <div>
-                        <div className="inline-flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
-                            <Sparkles className="size-4" />
-                            Une aventure étudiante enthousiasmante
+        <div className="relative grid lg:grid-cols-2 gap-8 items-center">
+            {/* Texte gauche */}
+            <div>
+                <div className="inline-flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
+                    <Sparkles className="size-4" />
+                    Voyage d’étude du Génie civil EPFL
+                </div>
+                <h1 className="mt-3 text-3xl md:text-5xl font-extrabold leading-tight">
+                    Travel GC - Sponsor
+                </h1>
+                <div className="mt-1 text-2xl md:text-3xl select-none" aria-hidden="true">
+                    🤝🌍
+                </div>
+                <p className="mt-4 text-emerald-900/85 leading-relaxed">
+                    Nous organisons le voyage d’étude des étudiant·e·s de <b>3e année Bachelor en Génie Civil</b> à l’EPFL.
+                    Du <b>7 au 15 juillet 2025</b>, notre destination sera <b>Budapest</b> : une ville riche en
+                    architecture, en histoire et en ouvrages d’ingénierie.
+                </p>
+
+                {/* petites bulles */}
+                <div className="mt-5 grid sm:grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
+                        <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                            Qui sommes-nous ?
                         </div>
-                        <h1 className="mt-3 text-3xl md:text-5xl font-extrabold leading-tight">
-                            Travel GC — Partenaires de voyage 🤝🌍
-                        </h1>
-                        <p className="mt-4 text-emerald-900/85 leading-relaxed">
-                            Nous sommes un collectif d’étudiant·e·s qui prépare un rail/road-trip
-                            <b> Vienne • Bratislava • Budapest</b> du <b>7–17 juillet 2025</b>.
-                            On produit des contenus authentiques, on crée des rencontres et on
-                            valorise nos partenaires avec une visibilité moderne et bienveillante.
+                        <p className="mt-2 text-emerald-900/90">
+                            Une association dynamique regroupant les étudiant·e·s de la section Génie Civil à l’EPFL,
+                            avec l’envie de découvrir notre domaine sous un angle culturel, technique et humain.
                         </p>
-
-                        {/* petites bulles : qui on est / notre but */}
-                        <div className="mt-5 grid sm:grid-cols-2 gap-4">
-                            <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
-                                <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                                    Qui sommes-nous ?
-                                </div>
-                                <p className="mt-2 text-emerald-900/90">
-                                    Une asso dynamique : organisation d’événements, esprit d’équipe,
-                                    contenus créatifs et professionnalisme.
-                                </p>
-                            </div>
-                            <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
-                                <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                                    Notre but
-                                </div>
-                                <p className="mt-2 text-emerald-900/90">
-                                    Créer un partenariat <i>win-win</i> : visibilité, contenu réutilisable,
-                                    et activations qui ont du sens pour votre marque.
-                                </p>
-                            </div>
-                        </div>
-                        {/* pas de badges/bouton en bas */}
                     </div>
-
-                    {/* Visuel droite : image importée */}
-                    <div className="relative">
-                        <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
-                            <img src={hero} alt="Travel GC — aperçu du voyage" className="h-full w-full object-cover" />
+                    <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
+                        <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                            Notre but
                         </div>
+                        <p className="mt-2 text-emerald-900/90">
+                            Rendre ce voyage accessible à tou·te·s, en associant la <b>découverte technique</b> à
+                            l’<b>expérience collective</b>. Nous aimons partager cette aventure avec nos partenaires.
+                        </p>
                     </div>
                 </div>
-            </SectionCard>
+            </div>
+
+            {/* Visuel droite */}
+            <div className="relative">
+                <div className="aspect-[1/1] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
+                    <img src={hero} alt="Travel GC aperçu du voyage" className="h-full w-full object-cover" />
+                </div>
+            </div>
         </div>
-    );
+    </SectionCard>
+);
+
+/* ===================== Section 1.5 — Visites GC (Budapest) ===================== */
+type Visit = {
+    key: string;
+    title: string;
+    blurb: string;
+    leads: string[];
+    notes?: string;
 };
 
-/* ===================== Slide 2 — Packs ===================== */
-/** Prestations = nouvelle liste (style de ton PDF) */
+const visits = [
+    {
+        key: "m4",
+        title: "Ligne M4 du métro de Budapest",
+        blurb:
+            "Cette visite illustre nos cours de géotechnique et de structures souterraines : parois moulées, creusement en top-down, intégration urbaine et contraintes de sol. C’est l’occasion de découvrir comment théorie et pratique se rejoignent dans un projet d’infrastructure majeur.",
+        img: img2,
+    },
+    {
+        key: "megyeri",
+        title: "Pont Megyeri au dessus du Danube",
+        blurb:
+            "Ce pont haubané spectaculaire relie les rives nord de Budapest. Il incarne les principes étudiés dans nos cours de statique et de conception des structures : efforts dans les câbles, stabilité dynamique, et esthétique des grandes portées. Sa visite permettrait de comprendre la coordination entre ingénierie et architecture sur un ouvrage d’envergure nationale.",
+        img: img1,
+    },
+] as const;
+
+
+const SectionVisits: React.FC = () => (
+    <div className="grid gap-6">
+        <div className="flex items-center gap-2">
+            <Sparkles className="size-6 text-emerald-700" />
+            <h2 className="text-xl sm:text-2xl font-semibold">Nos visites génie civil</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+            {visits.map((v) => (
+                <SectionCard key={v.key}>
+                    <div className="space-y-3 text-sm md:text-[15px] leading-relaxed">
+                        <div className="text-base font-semibold md:text-lg">{v.title}</div>
+                        <p className="text-emerald-900/85">{v.blurb}</p>
+                        <div className="overflow-hidden rounded-xl border border-emerald-200/70">
+                            <img
+                                src={v.img}
+                                alt={v.title}
+                                className="w-full h-48 md:h-56 object-cover"
+                            />
+                        </div>
+                    </div>
+                </SectionCard>
+            ))}
+        </div>
+    </div>
+);
+
+/* ===================== Données (ex Slide 2) ===================== */
+
 type Feature = { key: string; label: string };
 const baseFeatures: Feature[] = [
     { key: "credits", label: "Crédits" },
@@ -123,33 +177,27 @@ const baseFeatures: Feature[] = [
     { key: "conference", label: "Conférence (EPFL)" },
 ];
 
-/** Descriptions (d’après tes captures) */
 const featureDescriptions: Record<string, string> = {
     credits:
         "En tant que sponsor, votre entreprise sera honorée dans toutes nos annonces et remerciements publics.",
-    flyers:
-        "Vos flyers seront soigneusement présentés dans notre salle de vie.",
+    flyers: "Vos flyers seront soigneusement présentés dans notre salle de vie.",
     logo_i:
         "Votre logo figure sur nos affiches d’événements, renforçant votre visibilité sur le campus.",
-    distribution:
-        "Si vous avez des produits, nous les distribuons lors de nos événements.",
-    pull:
-        "Votre logo apparaît sur notre pull de section.",
+    distribution: "Si vous avez des produits, nous les distribuons lors de nos événements.",
+    pull: "Votre logo apparaît sur notre pull de section.",
     logo_ii:
         "Votre logo figure sur toutes nos annonces d’événements (affiches & réseaux) et sur le drapeau de l’AEGC.",
     salle:
         "Affichage promotionnel dans notre salle de vie (stages, offres, infos entreprise).",
     presentation:
         "Publication dédiée à votre entreprise sur notre compte Instagram (@travel__gc).",
-    drapeau:
-        "Bannière/roll-up mise en avant lors de nos événements.",
+    drapeau: "Bannière/roll-up mise en avant lors de nos événements.",
     titre_pp:
         "Mention partenaire principal du Travel GC + remerciements spéciaux pendant les événements.",
     conference:
         "Organisation d’une conférence à l’EPFL pour présenter votre entreprise et échanger avec les étudiant·e·s.",
 };
 
-/** Packs + mapping (diagonale : Bronze → Argent → Or → Platine) */
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
 const packs: Pack[] = [
     {
@@ -226,7 +274,6 @@ const packs: Pack[] = [
     },
 ];
 
-/** Tri pour créer l’effet “diagonale” : on classe par 1er pack qui l’inclut */
 const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
     useMemo(() => {
         const firstIdx: Record<string, number> = {};
@@ -239,20 +286,25 @@ const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
         });
         return [...features].sort((a, b) => {
             if (firstIdx[a.key] !== firstIdx[b.key]) return firstIdx[a.key] - firstIdx[b.key];
-            return features.findIndex((x) => x.key === a.key) - features.findIndex((x) => x.key === b.key);
+            return (
+                features.findIndex((x) => x.key === a.key) -
+                features.findIndex((x) => x.key === b.key)
+            );
         });
     }, [features, packs]);
 
-const SlideOffers: React.FC = () => {
+/* ===================== Section 2 — Packs (ex Slide 2) ===================== */
+const SectionOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
     return (
-        <div className="w-full h-full grid gap-6">
+        <div className="grid gap-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Handshake className="size-6 text-emerald-700" />
-                    <h2 id="packs" className="text-xl sm:text-2xl font-semibold">Packs sponsoring</h2>
+                    <h2 id="packs" className="text-xl sm:text-2xl font-semibold">
+                        Packs sponsoring
+                    </h2>
                 </div>
-                <div className="text-sm text-emerald-900/80">Vue diagonale par niveau</div>
             </div>
 
             <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -280,8 +332,8 @@ const SlideOffers: React.FC = () => {
                                                 {p.grants[f.key] ? (
                                                     <Check className="inline size-4 text-emerald-700" />
                                                 ) : (
-                                                    <Minus className="inline size-4 text-emerald-300" />
-                                                )}
+                                                    <Minus className="inline size-4 text-emerald-300" />)
+                                                }
                                             </td>
                                         ))}
                                     </tr>
@@ -292,8 +344,7 @@ const SlideOffers: React.FC = () => {
 
                     {/* petite note sous le tableau */}
                     <div className="mt-2 text-xs italic text-emerald-900/70">
-                        * Pour plus de précision, voir{" "}
-                        <span className="font-medium">“Détail des contreparties”</span> ci-dessous.
+                        * Pour plus de précision, voir <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
                     </div>
                 </SectionCard>
 
@@ -338,8 +389,8 @@ const SlideOffers: React.FC = () => {
     );
 };
 
-/* ===================== Slide 3 — Contact ===================== */
-const SlideContact: React.FC = () => {
+/* ===================== Section 3 — Contact (ex Slide 3) ===================== */
+const SectionContact: React.FC = () => {
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -375,7 +426,7 @@ const SlideContact: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-full grid grid-rows-[auto_1fr] gap-6">
+        <div className="grid grid-rows-[auto_1fr] gap-6">
             <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                     <Mail className="size-6 text-emerald-700" />
@@ -493,26 +544,18 @@ const SlideContact: React.FC = () => {
                                     rows={4}
                                     className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
                                     placeholder="Parlez-nous de vos objectifs…"
-                                ></textarea>
+                                />
                             </div>
 
                             <label className="inline-flex items-center gap-2 text-sm">
-                                <input
-                                    name="consent"
-                                    type="checkbox"
-                                    required
-                                    className="rounded border-emerald-300"
-                                />
+                                <input name="consent" type="checkbox" required className="rounded border-emerald-300" />
                                 J'accepte d'être recontacté·e à propos du sponsoring.
                             </label>
 
                             {/* message d’erreur discret (si besoin) */}
                             {error && <div className="text-sm text-red-600">{error}</div>}
 
-                            <button
-                                type="submit"
-                                className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}
-                            >
+                            <button type="submit" className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}>
                                 Envoyer
                             </button>
                         </form>
@@ -523,62 +566,34 @@ const SlideContact: React.FC = () => {
     );
 };
 
-/* ===================== Controller ===================== */
-const slides = [
-    { key: "intro", node: <SlideIntro /> },
-    { key: "offers", node: <SlideOffers /> },
-    { key: "contact", node: <SlideContact /> },
-];
-
-export default function SponsorDeck() {
-    const [idx, setIdx] = useState(0);
-    const next = () => setIdx((i) => Math.min(i + 1, slides.length - 1));
-    const prev = () => setIdx((i) => Math.max(i - 1, 0));
-    const progress = ((idx + 1) / slides.length) * 100;
-
-    useEffect(() => {
-        const h = (e: KeyboardEvent) => {
-            if (e.key === "ArrowLeft") prev();
-            if (e.key === "ArrowRight") next();
-        };
-        window.addEventListener("keydown", h);
-        return () => window.removeEventListener("keydown", h);
-    }, []);
-
+/* ===================== Page unique ===================== */
+export default function SponsorPage() {
     return (
         <div className={cx("min-h-[100dvh] w-full", brand.bg)}>
             <div className="mx-auto max-w-6xl px-4 py-6 md:py-10">
-                {/* Header global */}
+                {/* Header global (conservé, mais sans flèches ni progression) */}
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <div className="size-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">TG</div>
                         <div>
                             <div className="font-semibold">Travel GC</div>
-                            <div className="text-xs text-emerald-900/70">Sponsor Deck — Aperçu</div>
+                            <div className="text-xs text-emerald-900/70">Partenaires du voyage</div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <button onClick={prev} className={cx("rounded-xl p-2", brand.btn.ghost)} aria-label="Précédent">
-                            <ChevronLeft className="size-5" />
-                        </button>
-                        <button onClick={next} className={cx("rounded-xl p-2", brand.btn.solid)} aria-label="Suivant">
-                            <ChevronRight className="size-5" />
-                        </button>
+                    {/* CTA rapide vers contact */}
+                    <a href="#contact" className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}>
+                        Nous contacter
+                    </a>
+                </div>
+
+                {/* Contenu empilé */}
+                <div className="mt-6 md:mt-8 grid gap-8 md:gap-10">
+                    <SectionIntro />
+                    <SectionVisits />
+                    <SectionOffers />
+                    <div id="contact">
+                        <SectionContact />
                     </div>
-                </div>
-
-                {/* barre de progression */}
-                <div className="mt-4 h-2 bg-emerald-100 rounded-full overflow-hidden">
-                    <motion.div className="h-full bg-emerald-600" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ type: "spring", stiffness: 120, damping: 20 }} />
-                </div>
-
-                {/* Slides */}
-                <div className="mt-6 md:mt-8">
-                    <AnimatePresence mode="wait">
-                        <motion.div key={slides[idx].key} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.25 }}>
-                            {slides[idx].node}
-                        </motion.div>
-                    </AnimatePresence>
                 </div>
             </div>
         </div>
