@@ -520,7 +520,7 @@ const SectionOffers: React.FC = () => {
 
                         {/* Légende + note */}
                         <div className="mt-2 text-xs italic text-emerald-900/70">
-                            * Pour les descriptions détaillées, voir la section <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
+                            * Pour les descriptions détaillées, voir la section <span className="font-medium">« Détail des prestations »</span> ci-dessous.
                         </div>
                     </SectionCard>
 
