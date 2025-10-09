@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
     Mail,
     Phone,
@@ -9,10 +9,12 @@ import {
     Sparkles,
     Handshake,
 } from "lucide-react";
-import hero from "../assets/image.jpg"; // ← image importée depuis src/assets
+
+import hero from "../assets/image.jpg";
 import img1 from "../assets/visit_megyeri.jpg";
 import img2 from "../assets/visit_m4.jpg";
 
+/* ===================== Constantes ===================== */
 const FORM_ENDPOINT = "https://formspree.io/f/xeorerdy";
 
 const cx = (...c: Array<string | false | null | undefined>) =>
@@ -22,11 +24,19 @@ const brand = {
     bg: "bg-gradient-to-br from-emerald-50 via-white to-teal-50",
     card: "bg-white/70 backdrop-blur-md shadow-lg border border-emerald-100",
     btn: {
-        solid: "bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white",
+        solid:
+            "bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white transition-colors",
         ghost: "hover:bg-emerald-50 text-emerald-700",
         outline: "border border-emerald-300 hover:border-emerald-400 text-emerald-700",
     },
 };
+
+const Container: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
+    className,
+    children,
+}) => (
+    <div className={cx("mx-auto w-full max-w-6xl px-4", className)}>{children}</div>
+);
 
 const SectionCard: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
     className,
@@ -35,133 +45,225 @@ const SectionCard: React.FC<React.PropsWithChildren<{ className?: string }>> = (
     <div className={cx("rounded-2xl p-6 md:p-8", brand.card, className)}>{children}</div>
 );
 
-/* ===================== Section 1 — Intro (réécrite) ===================== */
-const SectionIntro: React.FC = () => (
-    <SectionCard className="relative overflow-hidden">
-        {/* blobs doux */}
-        <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="absolute -right-16 -top-16 size-64 rounded-full bg-emerald-200/40 blur-2xl"
-        />
-        <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="absolute -left-10 -bottom-10 size-52 rounded-full bg-teal-200/40 blur-2xl"
-        />
-
-        <div className="relative grid lg:grid-cols-2 gap-8 items-center">
-            {/* Texte gauche */}
-            <div>
-                <div className="inline-flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
-                    <Sparkles className="size-4" />
-                    Voyage d’étude du Génie civil EPFL
-                </div>
-                <h1 className="mt-3 text-3xl md:text-5xl font-extrabold leading-tight">
-                    Travel GC - Sponsor
-                </h1>
-                <div className="mt-1 text-2xl md:text-3xl select-none" aria-hidden="true">
-                    🤝🌍
-                </div>
-                <p className="mt-4 text-emerald-900/85 leading-relaxed">
-                    Nous organisons le voyage d’étude des étudiant·e·s de <b>3e année Bachelor en Génie Civil</b> à l’EPFL.
-                    Du <b>7 au 15 juillet 2025</b>, notre destination sera <b>Budapest</b> : une ville riche en
-                    architecture, en histoire et en ouvrages d’ingénierie.
-                </p>
-
-                {/* petites bulles */}
-                <div className="mt-5 grid sm:grid-cols-2 gap-4">
-                    <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
-                        <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                            Qui sommes-nous ?
+/* ===================== Header ===================== */
+const Header: React.FC = () => {
+    return (
+        <header className="sticky top-0 z-40 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 border-b border-emerald-100">
+            <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:absolute focus:m-3 focus:rounded-lg focus:bg-emerald-700 focus:px-3 focus:py-2 focus:text-white"
+            >
+                Aller au contenu
+            </a>
+            <Container className="py-3 md:py-4">
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="size-9 shrink-0 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">
+                            TG
                         </div>
-                        <p className="mt-2 text-emerald-900/90">
-                            Une association dynamique regroupant les étudiant·e·s de la section Génie Civil à l’EPFL,
-                            avec l’envie de découvrir notre domaine sous un angle culturel, technique et humain.
-                        </p>
+                        <div className="min-w-0">
+                            <div className="font-semibold truncate">Travel GC</div>
+                            <div className="text-xs text-emerald-900/70 truncate">
+                                Partenaires du voyage
+                            </div>
+                        </div>
                     </div>
-                    <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
-                        <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                            Notre but
+
+                    <nav className="hidden md:flex items-center gap-1">
+                        <a
+                            href="#visites"
+                            className={cx(
+                                "rounded-xl px-3 py-2 text-sm font-medium",
+                                brand.btn.ghost
+                            )}
+                        >
+                            Visites GC
+                        </a>
+                        <a
+                            href="#packs"
+                            className={cx(
+                                "rounded-xl px-3 py-2 text-sm font-medium",
+                                brand.btn.ghost
+                            )}
+                        >
+                            Packs
+                        </a>
+                        <a
+                            href="#contact"
+                            className={cx(
+                                "rounded-xl px-3 py-2 text-sm font-medium",
+                                brand.btn.solid
+                            )}
+                        >
+                            Nous contacter
+                        </a>
+                    </nav>
+
+                    {/* CTA mobile */}
+                    <a
+                        href="#contact"
+                        className={cx(
+                            "md:hidden rounded-xl px-3 py-2 text-sm font-medium",
+                            brand.btn.solid
+                        )}
+                    >
+                        Contact
+                    </a>
+                </div>
+            </Container>
+        </header>
+    );
+};
+
+/* ===================== Section 1 — Intro ===================== */
+const SectionIntro: React.FC = () => {
+    const reduceMotion = useReducedMotion();
+
+    return (
+        <SectionCard className="relative overflow-hidden">
+            {/* blobs doux */}
+            <motion.div
+                initial={reduceMotion ? false : { scale: 0.85, opacity: 0 }}
+                whileInView={reduceMotion ? {} : { scale: 1, opacity: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 }}
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-emerald-200/40 blur-2xl"
+            />
+            <motion.div
+                initial={reduceMotion ? false : { scale: 0.85, opacity: 0 }}
+                whileInView={reduceMotion ? {} : { scale: 1, opacity: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-10 -bottom-10 size-52 rounded-full bg-teal-200/40 blur-2xl"
+            />
+
+            <div className="relative grid lg:grid-cols-2 gap-8 items-center">
+                {/* Texte gauche */}
+                <div>
+                    <div className="inline-flex items-center gap-2 text-xs md:text-sm font-medium px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
+                        <Sparkles className="size-4" />
+                        Voyage d’étude du Génie civil EPFL
+                    </div>
+                    <h1 className="mt-3 text-3xl md:text-5xl font-extrabold leading-tight">
+                        Travel GC — Sponsoring
+                    </h1>
+                    <div
+                        className="mt-1 text-2xl md:text-3xl select-none"
+                        aria-hidden="true"
+                    >
+                        🤝🌍
+                    </div>
+                    <p className="mt-4 text-emerald-900/85 leading-relaxed text-[15px] md:text-base">
+                        Nous organisons le voyage d’étude des étudiant·e·s de{" "}
+                        <b>3e année Bachelor en Génie Civil</b> à l’EPFL. Du{" "}
+                        <b>7 au 15 juillet 2025</b>, notre destination sera <b>Budapest</b> :
+                        une ville riche en architecture, en histoire et en ouvrages
+                        d’ingénierie.
+                    </p>
+
+                    {/* petites bulles */}
+                    <div className="mt-5 grid sm:grid-cols-2 gap-4">
+                        <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
+                            <div className="text-[11px] md:text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                                Qui sommes-nous ?
+                            </div>
+                            <p className="mt-2 text-emerald-900/90 text-[15px] md:text-base leading-relaxed">
+                                Une association dynamique regroupant les étudiant·e·s de la
+                                section Génie Civil à l’EPFL, avec l’envie de découvrir notre
+                                domaine sous un angle culturel, technique et humain.
+                            </p>
                         </div>
-                        <p className="mt-2 text-emerald-900/90">
-                            Rendre ce voyage accessible à tou·te·s, en associant la <b>découverte technique</b> à
-                            l’<b>expérience collective</b>. Nous aimons partager cette aventure avec nos partenaires.
-                        </p>
+                        <div className="rounded-xl border border-emerald-200/70 p-4 bg-white/70">
+                            <div className="text-[11px] md:text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                                Notre but
+                            </div>
+                            <p className="mt-2 text-emerald-900/90 text-[15px] md:text-base leading-relaxed">
+                                Rendre ce voyage accessible à tou·te·s, en associant la{" "}
+                                <b>découverte technique</b> à l’<b>expérience collective</b>. Nous
+                                aimons partager cette aventure avec nos partenaires.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Visuel droite */}
+                <div className="relative">
+                    <div className="aspect-[4/3] sm:aspect-[1/1] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
+                        <img
+                            src={hero}
+                            alt="Aperçu du voyage Travel GC"
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                            sizes="(min-width:1024px) 560px, (min-width:640px) 60vw, 100vw"
+                        />
                     </div>
                 </div>
             </div>
+        </SectionCard>
+    );
+};
 
-            {/* Visuel droite */}
-            <div className="relative">
-                <div className="aspect-[1/1] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
-                    <img src={hero} alt="Travel GC aperçu du voyage" className="h-full w-full object-cover" />
-                </div>
-            </div>
-        </div>
-    </SectionCard>
-);
-
-/* ===================== Section 1.5 — Visites GC (Budapest) ===================== */
+/* ===================== Section 1.5 — Visites GC ===================== */
 type Visit = {
     key: string;
     title: string;
     blurb: string;
-    leads: string[];
-    notes?: string;
+    img: string;
 };
 
-const visits = [
+const visits: Visit[] = [
     {
         key: "m4",
         title: "Ligne M4 du métro de Budapest",
         blurb:
-            "Cette visite illustre nos cours de géotechnique et de structures souterraines : parois moulées, creusement en top-down, intégration urbaine et contraintes de sol. C’est l’occasion de découvrir comment théorie et pratique se rejoignent dans un projet d’infrastructure majeur.",
+            "Géotechnique & structures souterraines : parois moulées, top-down, intégration urbaine et contraintes de sol. Théorie & pratique réunies sur une infrastructure majeure.",
         img: img2,
     },
     {
         key: "megyeri",
-        title: "Pont Megyeri au dessus du Danube",
+        title: "Pont Megyeri au-dessus du Danube",
         blurb:
-            "Ce pont haubané spectaculaire relie les rives nord de Budapest. Il incarne les principes étudiés dans nos cours de statique et de conception des structures : efforts dans les câbles, stabilité dynamique, et esthétique des grandes portées. Sa visite permettrait de comprendre la coordination entre ingénierie et architecture sur un ouvrage d’envergure nationale.",
+            "Grand haubané : efforts dans les câbles, stabilité dynamique, esthétique des grandes portées et coordination ingénierie/architecture.",
         img: img1,
     },
-] as const;
-
+];
 
 const SectionVisits: React.FC = () => (
-    <div className="grid gap-6">
-        <div className="flex items-center gap-2">
-            <Sparkles className="size-6 text-emerald-700" />
-            <h2 className="text-xl sm:text-2xl font-semibold">Nos visites génie civil</h2>
-        </div>
+    <section id="visites" className="scroll-mt-24">
+        <div className="grid gap-6">
+            <div className="flex items-center gap-2">
+                <Sparkles className="size-6 text-emerald-700" />
+                <h2 className="text-xl sm:text-2xl font-semibold">Nos visites génie civil</h2>
+            </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-            {visits.map((v) => (
-                <SectionCard key={v.key}>
-                    <div className="space-y-3 text-sm md:text-[15px] leading-relaxed">
-                        <div className="text-base font-semibold md:text-lg">{v.title}</div>
-                        <p className="text-emerald-900/85">{v.blurb}</p>
-                        <div className="overflow-hidden rounded-xl border border-emerald-200/70">
-                            <img
-                                src={v.img}
-                                alt={v.title}
-                                className="w-full h-48 md:h-56 object-cover"
-                            />
+            <div className="grid md:grid-cols-2 gap-6">
+                {visits.map((v) => (
+                    <SectionCard key={v.key}>
+                        <div className="space-y-3 text-[15px] md:text-base leading-relaxed">
+                            <div className="text-base font-semibold md:text-lg">{v.title}</div>
+                            <p className="text-emerald-900/85">{v.blurb}</p>
+                            <div className="overflow-hidden rounded-xl border border-emerald-200/70">
+                                <img
+                                    src={v.img}
+                                    alt={v.title}
+                                    className="w-full h-48 md:h-56 object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                    sizes="(min-width:768px) 50vw, 100vw"
+                                />
+                            </div>
                         </div>
-                    </div>
-                </SectionCard>
-            ))}
+                    </SectionCard>
+                ))}
+            </div>
         </div>
-    </div>
+    </section>
 );
 
-/* ===================== Données (ex Slide 2) ===================== */
-
+/* ===================== Données packs ===================== */
 type Feature = { key: string; label: string };
 const baseFeatures: Feature[] = [
     { key: "credits", label: "Crédits" },
@@ -179,23 +281,24 @@ const baseFeatures: Feature[] = [
 
 const featureDescriptions: Record<string, string> = {
     credits:
-        "En tant que sponsor, votre entreprise sera honorée dans toutes nos annonces et remerciements publics.",
-    flyers: "Vos flyers seront soigneusement présentés dans notre salle de vie.",
+        "Votre entreprise est honorée dans nos annonces et remerciements publics.",
+    flyers: "Vos flyers sont présentés dans notre salle de vie.",
     logo_i:
-        "Votre logo figure sur nos affiches d’événements, renforçant votre visibilité sur le campus.",
-    distribution: "Si vous avez des produits, nous les distribuons lors de nos événements.",
-    pull: "Votre logo apparaît sur notre pull de section.",
+        "Logo sur nos affiches d’événements sur le campus.",
+    distribution:
+        "Distribution de vos produits lors de nos événements (si souhaité).",
+    pull: "Logo sur le pull officiel de la section.",
     logo_ii:
-        "Votre logo figure sur toutes nos annonces d’événements (affiches & réseaux) et sur le drapeau de l’AEGC.",
+        "Logo sur toutes les annonces (affiches & réseaux) + drapeau AEGC.",
     salle:
-        "Affichage promotionnel dans notre salle de vie (stages, offres, infos entreprise).",
+        "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
     presentation:
-        "Publication dédiée à votre entreprise sur notre compte Instagram (@travel__gc).",
-    drapeau: "Bannière/roll-up mise en avant lors de nos événements.",
+        "Publication dédiée sur Instagram (@travel__gc).",
+    drapeau: "Bannière/roll-up mis en avant pendant nos événements.",
     titre_pp:
-        "Mention partenaire principal du Travel GC + remerciements spéciaux pendant les événements.",
+        "Mention de partenaire principal + remerciements spécifiques.",
     conference:
-        "Organisation d’une conférence à l’EPFL pour présenter votre entreprise et échanger avec les étudiant·e·s.",
+        "Conférence à l’EPFL pour présenter votre entreprise aux étudiant·e·s.",
 };
 
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
@@ -209,7 +312,6 @@ const packs: Pack[] = [
             logo_i: true,
             salle: true,
             presentation: true,
-
             logo_ii: false,
             distribution: false,
             drapeau: false,
@@ -227,7 +329,6 @@ const packs: Pack[] = [
             logo_i: true,
             salle: true,
             presentation: true,
-
             logo_ii: true,
             distribution: true,
             drapeau: true,
@@ -245,7 +346,6 @@ const packs: Pack[] = [
             logo_i: true,
             salle: true,
             presentation: true,
-
             logo_ii: true,
             distribution: true,
             drapeau: true,
@@ -263,7 +363,6 @@ const packs: Pack[] = [
             logo_i: true,
             salle: true,
             presentation: true,
-
             logo_ii: true,
             distribution: true,
             drapeau: true,
@@ -293,103 +392,125 @@ const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
         });
     }, [features, packs]);
 
-/* ===================== Section 2 — Packs (ex Slide 2) ===================== */
+/* ===================== Section 2 — Packs ===================== */
 const SectionOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
     return (
-        <div className="grid gap-6">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Handshake className="size-6 text-emerald-700" />
-                    <h2 id="packs" className="text-xl sm:text-2xl font-semibold">
-                        Packs sponsoring
-                    </h2>
+        <section id="packs" className="scroll-mt-24">
+            <div className="grid gap-6">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Handshake className="size-6 text-emerald-700" />
+                        <h2 className="text-xl sm:text-2xl font-semibold">Packs sponsoring</h2>
+                    </div>
                 </div>
-            </div>
 
-            <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
-                {/* Tableau */}
-                <SectionCard>
-                    <div className="overflow-x-auto text-sm">
-                        <table className="min-w-full">
-                            <thead>
-                                <tr>
-                                    <th className="text-left py-2 pr-3 font-semibold">Prestations</th>
-                                    {packs.map((p) => (
-                                        <th key={p.name} className="px-3 py-2 text-center font-semibold text-xs">
-                                            <div>{p.name}</div>
-                                            <div className="text-emerald-700 font-bold">{p.price}</div>
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {features.map((f, idx) => (
-                                    <tr key={f.key} className={idx % 2 ? "bg-emerald-50/40" : ""}>
-                                        <td className="py-2 pr-3 whitespace-nowrap">{f.label}</td>
-                                        {packs.map((p) => (
-                                            <td key={p.name + f.key} className="px-3 py-2 text-center">
-                                                {p.grants[f.key] ? (
-                                                    <Check className="inline size-4 text-emerald-700" />
-                                                ) : (
-                                                    <Minus className="inline size-4 text-emerald-300" />)
-                                                }
-                                            </td>
-                                        ))}
-                                    </tr>
+                {/* Vue cartes (mobile-first) */}
+                <div className="grid gap-4 md:hidden">
+                    {packs.map((p) => (
+                        <SectionCard key={p.name} className="divide-y divide-emerald-100">
+                            <div className="flex items-center justify-between pb-3">
+                                <div className="text-lg font-semibold">{p.name}</div>
+                                <div className="text-emerald-700 font-bold">{p.price}</div>
+                            </div>
+                            <ul className="pt-3 grid gap-2 text-[15px] text-emerald-900/90">
+                                {features.map((f) => (
+                                    <li key={f.key} className="flex items-center justify-between">
+                                        <span className="pr-3">{f.label}</span>
+                                        {p.grants[f.key] ? (
+                                            <Check className="size-4 shrink-0 text-emerald-700" />
+                                        ) : (
+                                            <Minus className="size-4 shrink-0 text-emerald-300" />
+                                        )}
+                                    </li>
                                 ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* petite note sous le tableau */}
-                    <div className="mt-2 text-xs italic text-emerald-900/70">
-                        * Pour plus de précision, voir <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
-                    </div>
-                </SectionCard>
-
-                {/* Pourquoi nous sponsoriser — version PDF */}
-                <SectionCard className="space-y-4">
-                    <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
-                        Pourquoi nous sponsoriser ?
-                    </div>
-                    <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
-                        <div className="text-center">
-                            Le Travel GC a <b>besoin de vous</b> pour rendre ce voyage
-                            accessible au plus grand nombre d’entre nous !
-                        </div>
-                    </div>
-                    <div>
-                        <div className="font-semibold text-lg">Une opportunité pour…</div>
-                        <ul className="mt-3 space-y-2 text-emerald-900/90">
-                            <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
-                            <li>
-                                • Bénéficier de visibilité sur le campus (affiches dans notre salle de vie) et lors de nos
-                                événements (week-end ski GC, stand à Balélec, etc.).
-                            </li>
-                            <li>• Une visibilité garantie avec votre <b>logo sur nos pulls</b> de section.</li>
-                        </ul>
-                    </div>
-                </SectionCard>
-            </div>
-
-            {/* Détail des contreparties (même ordre que le tableau) */}
-            <SectionCard>
-                <h3 className="font-semibold">Détail des contreparties</h3>
-                <div className="mt-3 grid md:grid-cols-2 gap-4 text-sm text-emerald-900/85">
-                    {features.map((f) => (
-                        <div key={f.key}>
-                            <div className="font-medium">{f.label}</div>
-                            <div className="opacity-85">{featureDescriptions[f.key]}</div>
-                        </div>
+                            </ul>
+                        </SectionCard>
                     ))}
                 </div>
-            </SectionCard>
-        </div>
+
+                {/* Tableau (dès md) */}
+                <div className="hidden md:grid lg:grid-cols-[2fr_1fr] gap-6">
+                    <SectionCard>
+                        <div className="overflow-x-auto text-sm">
+                            <table className="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="text-left py-2 pr-3 font-semibold">Prestations</th>
+                                        {packs.map((p) => (
+                                            <th
+                                                key={p.name}
+                                                className="px-3 py-2 text-center font-semibold text-xs whitespace-nowrap"
+                                            >
+                                                <div>{p.name}</div>
+                                                <div className="text-emerald-700 font-bold">{p.price}</div>
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {features.map((f, idx) => (
+                                        <tr key={f.key} className={idx % 2 ? "bg-emerald-50/40" : ""}>
+                                            <td className="py-2 pr-3 whitespace-nowrap">{f.label}</td>
+                                            {packs.map((p) => (
+                                                <td key={p.name + f.key} className="px-3 py-2 text-center">
+                                                    {p.grants[f.key] ? (
+                                                        <Check className="inline size-4 text-emerald-700" />
+                                                    ) : (
+                                                        <Minus className="inline size-4 text-emerald-300" />
+                                                    )}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="mt-2 text-xs italic text-emerald-900/70">
+                            * Pour plus de précision, voir <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
+                        </div>
+                    </SectionCard>
+
+                    {/* Pourquoi nous sponsoriser */}
+                    <SectionCard className="space-y-4">
+                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
+                            Pourquoi nous sponsoriser ?
+                        </div>
+                        <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
+                            <div className="text-center">
+                                Le Travel GC a <b>besoin de vous</b> pour rendre ce voyage accessible au plus grand nombre !
+                            </div>
+                        </div>
+                        <div>
+                            <div className="font-semibold text-lg">Une opportunité pour…</div>
+                            <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
+                                <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
+                                <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & lors des événements (WE ski GC, Balélec…).</li>
+                                <li>• Assurer une présence durable avec votre <b>logo sur nos pulls</b> de section.</li>
+                            </ul>
+                        </div>
+                    </SectionCard>
+                </div>
+
+                {/* Détail des contreparties */}
+                <SectionCard>
+                    <h3 className="font-semibold">Détail des contreparties</h3>
+                    <div className="mt-3 grid md:grid-cols-2 gap-4 text-[15px] md:text-base text-emerald-900/85">
+                        {features.map((f) => (
+                            <div key={f.key}>
+                                <div className="font-medium">{f.label}</div>
+                                <div className="opacity-85">{featureDescriptions[f.key]}</div>
+                            </div>
+                        ))}
+                    </div>
+                </SectionCard>
+            </div>
+        </section>
     );
 };
 
-/* ===================== Section 3 — Contact (ex Slide 3) ===================== */
+/* ===================== Section 3 — Contact ===================== */
 const SectionContact: React.FC = () => {
     const [sent, setSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -417,185 +538,242 @@ const SectionContact: React.FC = () => {
                 form.reset();
             } else {
                 const data = await res.json().catch(() => null);
-                const msg = data?.errors?.[0]?.message || "Impossible d'envoyer le formulaire.";
+                const msg =
+                    data?.errors?.[0]?.message || "Impossible d'envoyer le formulaire.";
                 setError(msg);
             }
-        } catch (_) {
+        } catch {
             setError("Désolé, l’envoi a échoué. Réessayez plus tard.");
         }
     };
 
     return (
-        <div className="grid grid-rows-[auto_1fr] gap-6">
-            <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <Mail className="size-6 text-emerald-700" />
-                    <h2 className="text-xl sm:text-2xl font-semibold">Nous contacter</h2>
-                </div>
-                <div className="hidden md:flex items-center gap-6 text-sm text-emerald-900/80">
-                    <div className="flex items-center gap-2">
-                        <Phone className="size-4" /> +41 78 229 84 51 (Sponsoring)
+        <section id="contact" className="scroll-mt-24">
+            <div className="grid grid-rows-[auto_1fr] gap-6">
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <Mail className="size-6 text-emerald-700" />
+                        <h2 className="text-xl sm:text-2xl font-semibold">Nous contacter</h2>
                     </div>
-                </div>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-                <SectionCard>
-                    <div className="space-y-4">
-                        <div>
-                            <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                                Référentes
-                            </div>
-                            <div className="mt-2 grid sm:grid-cols-2 gap-4 text-emerald-900/90">
-                                <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                    <div className="font-medium">Chaimaa Ouchicha</div>
-                                    <div className="text-sm opacity-80">Responsable sponsoring</div>
-                                    <a className="mt-1 block text-sm underline underline-offset-4" href="mailto:chaimaa.ouchicha@epfl.ch">
-                                        chaimaa.ouchicha@epfl.ch
-                                    </a>
-                                    <div className="text-sm mt-1">+41 78 229 84 51</div>
-                                </div>
-
-                                <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                    <div className="font-medium">Margot Chapalain</div>
-                                    <div className="text-sm opacity-80">Présidente</div>
-                                    <a className="mt-1 block text-sm underline underline-offset-4" href="mailto:margot.chapalain@epfl.ch">
-                                        margot.chapalain@epfl.ch
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                                Adresse générale
-                            </div>
-                            <a className="mt-2 inline-flex items-center gap-2 text-emerald-800 underline underline-offset-4" href="mailto:contact@travelgc.ch">
-                                <Mail className="size-4" /> contact@travelgc.ch
-                            </a>
+                    <div className="hidden md:flex items-center gap-6 text-sm text-emerald-900/80">
+                        <div className="flex items-center gap-2">
+                            <Phone className="size-4" />{" "}
+                            <a href="tel:+41782298451" className="hover:underline">
+                                +41 78 123 45 67
+                            </a>{" "}
+                            (Sponsoring)
                         </div>
                     </div>
-                </SectionCard>
+                </div>
 
-                <SectionCard>
-                    {sent ? (
-                        <div className="h-full grid place-items-center text-center">
+                <div className="grid lg:grid-cols-2 gap-6">
+                    <SectionCard>
+                        <div className="space-y-4">
                             <div>
-                                <div className="mx-auto size-12 grid place-items-center rounded-full bg-emerald-100 mb-4">
-                                    <CheckCircle2 className="size-6 text-emerald-700" />
+                                <div className="text-[11px] md:text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                                    Référentes
                                 </div>
-                                <h3 className="text-xl font-semibold">Merci !</h3>
-                                <p className="mt-2 text-emerald-900/85">Votre message a bien été enregistré.</p>
+                                <div className="mt-2 grid sm:grid-cols-2 gap-4 text-emerald-900/90">
+                                    <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
+                                        <div className="font-medium">Riwa Nom</div>
+                                        <div className="text-sm opacity-80">Responsable sponsoring</div>
+                                        <a
+                                            className="mt-1 block text-sm underline underline-offset-4 break-all"
+                                            href="mailto:chaimaa.ouchicha@epfl.ch"
+                                        >
+                                            riwa.nom@epfl.ch
+                                        </a>
+                                        <div className="text-sm mt-1">
+                                            <a href="tel:+41782298451" className="hover:underline">
+                                                +41 79 123 45 67
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
+                                        <div className="font-medium">Charlotte Nom</div>
+                                        <div className="text-sm opacity-80">Présidente</div>
+                                        <a
+                                            className="mt-1 block text-sm underline underline-offset-4 break-all"
+                                            href="mailto:margot.chapalain@epfl.ch"
+                                        >
+                                            charlotte.nom@epfl.ch
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="text-[11px] md:text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
+                                    Adresse générale
+                                </div>
+                                <a
+                                    className="mt-2 inline-flex items-center gap-2 text-emerald-800 underline underline-offset-4 break-all"
+                                    href="mailto:contact@travelgc.ch"
+                                >
+                                    <Mail className="size-4" /> contact@travelgc.ch
+                                </a>
                             </div>
                         </div>
-                    ) : (
-                        <form onSubmit={onSubmit} className="grid gap-3" noValidate>
-                            {/* Honeypot anti-spam */}
-                            <input name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+                    </SectionCard>
 
-                            <div className="grid md:grid-cols-2 gap-3">
-                                <div>
-                                    <label className="text-sm font-medium">Nom de l'entreprise</label>
-                                    <input
-                                        name="company"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    />
+                    <SectionCard>
+                        <div aria-live="polite" aria-atomic="true">
+                            {sent ? (
+                                <div className="h-full grid place-items-center text-center">
+                                    <div>
+                                        <div className="mx-auto size-12 grid place-items-center rounded-full bg-emerald-100 mb-4">
+                                            <CheckCircle2 className="size-6 text-emerald-700" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold">Merci !</h3>
+                                        <p className="mt-2 text-emerald-900/85">
+                                            Votre message a bien été enregistré.
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="text-sm font-medium">Contact</label>
+                            ) : (
+                                <form onSubmit={onSubmit} className="grid gap-3" noValidate>
+                                    {/* Honeypot anti-spam */}
                                     <input
-                                        name="contact"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                        name="_gotcha"
+                                        className="hidden"
+                                        tabIndex={-1}
+                                        autoComplete="off"
                                     />
-                                </div>
-                            </div>
 
-                            <div className="grid md:grid-cols-2 gap-3">
-                                <div>
-                                    <label className="text-sm font-medium">Email</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        required
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="text-sm font-medium">Type de sponsoring</label>
-                                    <select
-                                        name="sponsoring_type"
-                                        className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                    <div className="grid md:grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium" htmlFor="company">
+                                                Nom de l'entreprise
+                                            </label>
+                                            <input
+                                                id="company"
+                                                name="company"
+                                                required
+                                                className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium" htmlFor="contact">
+                                                Contact
+                                            </label>
+                                            <input
+                                                id="contact"
+                                                name="contact"
+                                                required
+                                                className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid md:grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium" htmlFor="email">
+                                                Email
+                                            </label>
+                                            <input
+                                                id="email"
+                                                type="email"
+                                                name="email"
+                                                required
+                                                className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                                inputMode="email"
+                                                autoComplete="email"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium" htmlFor="sponsoring_type">
+                                                Type de sponsoring
+                                            </label>
+                                            <select
+                                                id="sponsoring_type"
+                                                name="sponsoring_type"
+                                                className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                                defaultValue="Bronze"
+                                            >
+                                                <option>Bronze</option>
+                                                <option>Argent</option>
+                                                <option>Or</option>
+                                                <option>Platine</option>
+                                                <option>Personnalisé</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm font-medium" htmlFor="message">
+                                            Message
+                                        </label>
+                                        <textarea
+                                            id="message"
+                                            name="message"
+                                            rows={4}
+                                            className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
+                                            placeholder="Parlez-nous de vos objectifs…"
+                                        />
+                                    </div>
+
+                                    <label className="inline-flex items-center gap-2 text-sm">
+                                        <input
+                                            name="consent"
+                                            type="checkbox"
+                                            required
+                                            className="rounded border-emerald-300"
+                                        />
+                                        J'accepte d'être recontacté·e à propos du sponsoring.
+                                    </label>
+
+                                    {/* message d’erreur discret (si besoin) */}
+                                    {error && <div className="text-sm text-red-600">{error}</div>}
+
+                                    <button
+                                        type="submit"
+                                        className={cx(
+                                            "mt-2 rounded-xl px-4 py-2 text-sm font-medium",
+                                            brand.btn.solid
+                                        )}
                                     >
-                                        <option>Bronze</option>
-                                        <option>Argent</option>
-                                        <option>Or</option>
-                                        <option>Platine</option>
-                                        <option>Personnalisé</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-medium">Message</label>
-                                <textarea
-                                    name="message"
-                                    rows={4}
-                                    className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                    placeholder="Parlez-nous de vos objectifs…"
-                                />
-                            </div>
-
-                            <label className="inline-flex items-center gap-2 text-sm">
-                                <input name="consent" type="checkbox" required className="rounded border-emerald-300" />
-                                J'accepte d'être recontacté·e à propos du sponsoring.
-                            </label>
-
-                            {/* message d’erreur discret (si besoin) */}
-                            {error && <div className="text-sm text-red-600">{error}</div>}
-
-                            <button type="submit" className={cx("mt-2 rounded-xl px-4 py-2 text-sm font-medium", brand.btn.solid)}>
-                                Envoyer
-                            </button>
-                        </form>
-                    )}
-                </SectionCard>
+                                        Envoyer
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </SectionCard>
+                </div>
             </div>
-        </div>
+        </section>
     );
 };
 
-/* ===================== Page unique ===================== */
+/* ===================== Page ===================== */
 export default function SponsorPage() {
+    // Défilement doux (CSS requis côté app : html{scroll-behavior:smooth})
     return (
         <div className={cx("min-h-[100dvh] w-full", brand.bg)}>
-            <div className="mx-auto max-w-6xl px-4 py-6 md:py-10">
-                {/* Header global (conservé, mais sans flèches ni progression) */}
-                <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                        <div className="size-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">TG</div>
-                        <div>
-                            <div className="font-semibold">Travel GC</div>
-                            <div className="text-xs text-emerald-900/70">Partenaires du voyage</div>
-                        </div>
-                    </div>
-                    {/* CTA rapide vers contact */}
-                    <a href="#contact" className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}>
-                        Nous contacter
-                    </a>
-                </div>
-
-                {/* Contenu empilé */}
-                <div className="mt-6 md:mt-8 grid gap-8 md:gap-10">
-                    <SectionIntro />
-                    <SectionVisits />
-                    <SectionOffers />
-                    <div id="contact">
+            <Header />
+            <main id="main">
+                <Container className="py-6 md:py-10">
+                    <div className="grid gap-8 md:gap-10">
+                        <SectionIntro />
+                        <SectionVisits />
+                        <SectionOffers />
                         <SectionContact />
                     </div>
-                </div>
-            </div>
+                </Container>
+            </main>
+            <footer className="mt-10 border-t border-emerald-100/70">
+                <Container className="py-6 text-center text-sm text-emerald-900/70">
+                    © {new Date().getFullYear()} Travel GC — Suivez-nous sur{" "}
+                    <a
+                        className="underline underline-offset-4 hover:text-emerald-700"
+                        href="https://instagram.com/travel__gc"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        @travel__gc
+                    </a>
+                </Container>
+            </footer>
         </div>
     );
 }

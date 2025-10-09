@@ -1,5 +1,65 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root { height: 100%; }
+/* ===== Reset légers & base ===== */
+html, body, #root {
+    height: 100%;
+}
+
+html {
+    /* défilement doux vers les ancres (#contact, #packs, …) */
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* pour éviter que l’ancre s’affiche sous le header sticky */
+:target {
+    /* 96px ≈ 24 * 4px (scroll-mt-24) -> adapte si ton header change de hauteur */
+    scroll-margin-top: 96px;
+}
+
+/* éléments médias par défaut fluides */
+img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    max-width: 100%;
+}
+
+img, video {
+    height: auto;
+}
+
+/* focus visibles accessibles (complément à Tailwind ring utilities) */
+:focus-visible {
+    outline: 2px solid #10b981; /* emerald-500 */
+    outline-offset: 2px;
+}
+
+/* meilleures unités viewport sur mobiles modernes */
+@supports (height: 100dvh) {
+    #root {
+        min-height: 100dvh;
+    }
+}
+
+/* Désactive animations/transitions si l’utilisateur préfère réduire le mouvement */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
