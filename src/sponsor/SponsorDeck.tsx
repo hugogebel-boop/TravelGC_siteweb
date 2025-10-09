@@ -266,48 +266,59 @@ const SectionVisits: React.FC = () => (
     </section>
 );
 
-/* ===================== Packs sponsoring — version mise à jour ===================== */
-/* Icônes attendues en haut du fichier :
+/* ===================== Packs sponsoring — version avec présentation vs conférence ===================== */
+/* Icônes attendues en haut :
    import { Handshake, Check, Minus, Medal, Trophy, Gem } from "lucide-react";
    (SectionCard, Container, cx, brand doivent déjà exister)
 */
 
 type Feature = { key: string; label: string };
 
-/* Libellés (on renomme “Pull” → “Maillot (logo)”) */
+/* Libellés (pull → maillot) + séparation des prises de parole */
 const baseFeatures: Feature[] = [
     { key: "credits", label: "Crédits" },
     { key: "flyers", label: "Flyers" },
     { key: "logo_i", label: "Logo type I" },
     { key: "salle", label: "Salle de vie" },
-    { key: "presentation", label: "Présentation (Instagram)" },
+    { key: "presentation_instagram", label: "Présentation (Instagram)" },
     { key: "logo_ii", label: "Logo type II" },
     { key: "distribution", label: "Distribution" },
     { key: "drapeau", label: "Drapeau événement" },
-    { key: "pull", label: "Maillot (logo)" }, // ← renommé
+    { key: "pull", label: "Maillot (logo)" },
+    { key: "presentation_cours", label: "Présentation en cours (45' + pause)" }, // OR
+    { key: "conference_epfl", label: "Conférence EPFL (audience large)" },       // PLATINE
     { key: "titre_pp", label: "Titre de partenaire principal" },
-    { key: "conference", label: "Présentation en cours / Conférence (EPFL)" },
 ];
 
-/* Descriptions (ajouts: maillots de foot, format cours 45' + pause, logo platine très visible) */
+/* Descriptions détaillées */
 const featureDescriptions: Record<string, string> = {
-    credits: "Votre entreprise est honorée dans nos annonces et remerciements publics.",
-    flyers: "Vos flyers sont présentés dans notre salle de vie.",
-    logo_i: "Logo sur nos affiches d’événements sur le campus (format standard).",
-    salle: "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
-    presentation: "Publication dédiée sur Instagram (@travel__gc).",
+    credits:
+        "Votre entreprise est honorée dans nos annonces et remerciements publics.",
+    flyers:
+        "Vos flyers sont présentés dans notre salle de vie.",
+    logo_i:
+        "Logo sur nos affiches d’événements sur le campus (format standard).",
+    salle:
+        "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
+    presentation_instagram:
+        "Publication dédiée sur Instagram (@travel__gc).",
     logo_ii:
         "Logo sur toutes les annonces (affiches & réseaux) + drapeau AEGC. En Platine, visibilité accrue (logo très grand).",
-    distribution: "Distribution de vos produits lors de nos événements (si souhaité).",
-    drapeau: "Bannière/roll-up mis en avant pendant nos événements.",
+    distribution:
+        "Distribution de vos produits lors de nos événements (si souhaité).",
+    drapeau:
+        "Bannière/roll-up mis en avant pendant nos événements.",
     pull:
-        "Logo sur nos maillots de foot officiels (visibilité forte auprès des étudiant·e·s et au-delà).",
-    titre_pp: "Mention de partenaire principal + remerciements spécifiques.",
-    conference:
-        "Intervention en contexte académique : présentation durant un cours (≈45 min + pause). Format extensible en Platine (type conférence).",
+        "Logo sur nos maillots de foot officiels (forte visibilité sur le campus).",
+    presentation_cours:
+        "Intervention en contexte académique pendant un cours : ~45 minutes + pause questions.",
+    conference_epfl:
+        "Conférence à l’EPFL avec audience plus large (ouverture à l’ensemble des étudiant·e·s intéressé·e·s).",
+    titre_pp:
+        "Mention de partenaire principal + remerciements spécifiques.",
 };
 
-/* Packs (logique : Argent = Bronze + … ; Or = Argent + … ; Platine = Or + …) */
+/* Packs (Argent = Bronze + … ; Or = Argent + … ; Platine = Or + …) */
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
 const packs: Pack[] = [
     // Bronze = crédits, flyers, logo I
@@ -320,17 +331,18 @@ const packs: Pack[] = [
             logo_i: true,
 
             salle: false,
-            presentation: false,
+            presentation_instagram: false,
             logo_ii: false,
             distribution: false,
             drapeau: false,
             pull: false,
+            presentation_cours: false,
+            conference_epfl: false,
             titre_pp: false,
-            conference: false,
         },
     },
 
-    // Argent = Bronze + salle de vie, présentation Insta, logo II
+    // Argent = Bronze + salle de vie, post Instagram, logo II
     {
         name: "Argent",
         price: "CHF 2'500",
@@ -340,18 +352,19 @@ const packs: Pack[] = [
             logo_i: true,
 
             salle: true,
-            presentation: true,
+            presentation_instagram: true,
             logo_ii: true,
 
             distribution: false,
             drapeau: false,
             pull: false,
+            presentation_cours: false,
+            conference_epfl: false,
             titre_pp: false,
-            conference: false,
         },
     },
 
-    // Or = Argent + distribution, maillot (logo), drapeau événement, présentation durant un cours
+    // Or = Argent + distribution, maillot, drapeau, présentation en cours (45' + pause)
     {
         name: "Or",
         price: "CHF 5'000",
@@ -361,19 +374,19 @@ const packs: Pack[] = [
             logo_i: true,
 
             salle: true,
-            presentation: true,
+            presentation_instagram: true,
             logo_ii: true,
 
             distribution: true,
             drapeau: true,
-            pull: true,          // maillot (logo)
-            conference: true,    // présentation en cours (45' + pause)
-
+            pull: true,
+            presentation_cours: true, // ← maintenant distinct
+            conference_epfl: false,
             titre_pp: false,
         },
     },
 
-    // Platine = Or + titre de partenaire principal & conférence (logo très grand dans les visuels)
+    // Platine = Or + titre partenaire principal + conférence EPFL (audience large, logo très grand)
     {
         name: "Platine",
         price: "CHF 7'500",
@@ -383,20 +396,20 @@ const packs: Pack[] = [
             logo_i: true,
 
             salle: true,
-            presentation: true,
+            presentation_instagram: true,
             logo_ii: true,
 
             distribution: true,
             drapeau: true,
             pull: true,
-            conference: true,    // format extensible type conférence
-
+            presentation_cours: true,  // compris aussi
+            conference_epfl: true,     // ← niveau Platine
             titre_pp: true,
         },
     },
 ];
 
-/* ——— Icônes par pack (identiques à avant) ——— */
+/* ——— Icônes par pack ——— */
 type IconComp = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 const packMeta: Record<string, { Icon: IconComp; bubble: string; ring: string }> = {
     Bronze: { Icon: Medal, bubble: "bg-amber-100 text-amber-700", ring: "ring-amber-200" },
@@ -409,16 +422,13 @@ const PackIcon: React.FC<{ name: string; className?: string }> = ({ name, classN
     const meta = packMeta[name] ?? packMeta.Bronze;
     const { Icon, bubble, ring } = meta;
     return (
-        <div
-            className={cx("size-9 md:size-10 grid place-items-center rounded-xl ring-1", bubble, ring, className)}
-            aria-hidden="true"
-        >
+        <div className={cx("size-9 md:size-10 grid place-items-center rounded-xl ring-1", bubble, ring, className)} aria-hidden="true">
             <Icon className="size-5 md:size-6" />
         </div>
     );
 };
 
-/* ——— Tri diagonal identique ——— */
+/* ——— Tri diagonal (inchangé) ——— */
 const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
     React.useMemo(() => {
         const firstIdx: Record<string, number> = {};
@@ -431,21 +441,17 @@ const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
         });
         return [...features].sort((a, b) => {
             if (firstIdx[a.key] !== firstIdx[b.key]) return firstIdx[a.key] - firstIdx[b.key];
-            return (
-                features.findIndex((x) => x.key === a.key) -
-                features.findIndex((x) => x.key === b.key)
-            );
+            return features.findIndex((x) => x.key === a.key) - features.findIndex((x) => x.key === b.key);
         });
     }, [features, packs]);
 
-/* ===================== Section — Packs ===================== */
+/* ===================== Section — Packs (UI identique) ===================== */
 const SectionOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
 
     return (
         <section id="packs" className="scroll-mt-24">
             <div className="grid gap-6">
-                {/* Titre */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <Handshake className="size-6 text-emerald-700" />
@@ -453,7 +459,7 @@ const SectionOffers: React.FC = () => {
                     </div>
                 </div>
 
-                {/* — Cartes mobile — */}
+                {/* Cartes mobile */}
                 <div className="grid gap-4 md:hidden">
                     {packs.map((p) => (
                         <SectionCard key={p.name} className="divide-y divide-emerald-100">
@@ -480,9 +486,8 @@ const SectionOffers: React.FC = () => {
                     ))}
                 </div>
 
-                {/* — Tableau desktop + colonne arguments — */}
+                {/* Tableau desktop + colonne arguments */}
                 <div className="hidden md:grid lg:grid-cols-[2fr_1fr] gap-6">
-                    {/* Tableau */}
                     <SectionCard>
                         <div className="overflow-x-auto text-sm">
                             <table className="min-w-full">
@@ -490,10 +495,7 @@ const SectionOffers: React.FC = () => {
                                     <tr>
                                         <th className="text-left py-2 pr-3 font-semibold whitespace-nowrap">Prestations</th>
                                         {packs.map((p) => (
-                                            <th
-                                                key={p.name}
-                                                className="px-3 py-3 text-center font-semibold text-xs whitespace-nowrap align-top"
-                                            >
+                                            <th key={p.name} className="px-3 py-3 text-center font-semibold text-xs whitespace-nowrap align-top">
                                                 <div className="flex flex-col items-center gap-1">
                                                     <PackIcon name={p.name} />
                                                     <div className="mt-1">{p.name}</div>
@@ -556,7 +558,7 @@ const SectionOffers: React.FC = () => {
                     </SectionCard>
                 </div>
 
-                {/* — Détail des contreparties — */}
+                {/* Détail des contreparties */}
                 <SectionCard>
                     <h3 className="font-semibold">Détail des contreparties</h3>
                     <div className="mt-3 grid md:grid-cols-2 gap-4 text-[15px] md:text-base text-emerald-900/85">
