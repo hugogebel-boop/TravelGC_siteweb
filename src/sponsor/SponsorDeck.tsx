@@ -8,6 +8,9 @@ import {
     Minus,
     Sparkles,
     Handshake,
+    Medal,
+    Trophy,
+    Gem,
 } from "lucide-react";
 
 import hero from "../assets/image.jpg";
@@ -263,8 +266,15 @@ const SectionVisits: React.FC = () => (
     </section>
 );
 
-/* ===================== Données packs ===================== */
+/* ===================== Packs sponsoring — version mise à jour ===================== */
+/* Icônes attendues en haut du fichier :
+   import { Handshake, Check, Minus, Medal, Trophy, Gem } from "lucide-react";
+   (SectionCard, Container, cx, brand doivent déjà exister)
+*/
+
 type Feature = { key: string; label: string };
+
+/* Libellés (on renomme “Pull” → “Maillot (logo)”) */
 const baseFeatures: Feature[] = [
     { key: "credits", label: "Crédits" },
     { key: "flyers", label: "Flyers" },
@@ -274,35 +284,33 @@ const baseFeatures: Feature[] = [
     { key: "logo_ii", label: "Logo type II" },
     { key: "distribution", label: "Distribution" },
     { key: "drapeau", label: "Drapeau événement" },
-    { key: "pull", label: "Pull (logo)" },
+    { key: "pull", label: "Maillot (logo)" }, // ← renommé
     { key: "titre_pp", label: "Titre de partenaire principal" },
-    { key: "conference", label: "Conférence (EPFL)" },
+    { key: "conference", label: "Présentation en cours / Conférence (EPFL)" },
 ];
 
+/* Descriptions (ajouts: maillots de foot, format cours 45' + pause, logo platine très visible) */
 const featureDescriptions: Record<string, string> = {
-    credits:
-        "Votre entreprise est honorée dans nos annonces et remerciements publics.",
+    credits: "Votre entreprise est honorée dans nos annonces et remerciements publics.",
     flyers: "Vos flyers sont présentés dans notre salle de vie.",
-    logo_i:
-        "Logo sur nos affiches d’événements sur le campus.",
-    distribution:
-        "Distribution de vos produits lors de nos événements (si souhaité).",
-    pull: "Logo sur le pull officiel de la section.",
+    logo_i: "Logo sur nos affiches d’événements sur le campus (format standard).",
+    salle: "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
+    presentation: "Publication dédiée sur Instagram (@travel__gc).",
     logo_ii:
-        "Logo sur toutes les annonces (affiches & réseaux) + drapeau AEGC.",
-    salle:
-        "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
-    presentation:
-        "Publication dédiée sur Instagram (@travel__gc).",
+        "Logo sur toutes les annonces (affiches & réseaux) + drapeau AEGC. En Platine, visibilité accrue (logo très grand).",
+    distribution: "Distribution de vos produits lors de nos événements (si souhaité).",
     drapeau: "Bannière/roll-up mis en avant pendant nos événements.",
-    titre_pp:
-        "Mention de partenaire principal + remerciements spécifiques.",
+    pull:
+        "Logo sur nos maillots de foot officiels (visibilité forte auprès des étudiant·e·s et au-delà).",
+    titre_pp: "Mention de partenaire principal + remerciements spécifiques.",
     conference:
-        "Conférence à l’EPFL pour présenter votre entreprise aux étudiant·e·s.",
+        "Intervention en contexte académique : présentation durant un cours (≈45 min + pause). Format extensible en Platine (type conférence).",
 };
 
+/* Packs (logique : Argent = Bronze + … ; Or = Argent + … ; Platine = Or + …) */
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
 const packs: Pack[] = [
+    // Bronze = crédits, flyers, logo I
     {
         name: "Bronze",
         price: "CHF 1'000",
@@ -310,8 +318,9 @@ const packs: Pack[] = [
             credits: true,
             flyers: true,
             logo_i: true,
-            salle: true,
-            presentation: true,
+
+            salle: false,
+            presentation: false,
             logo_ii: false,
             distribution: false,
             drapeau: false,
@@ -320,6 +329,8 @@ const packs: Pack[] = [
             conference: false,
         },
     },
+
+    // Argent = Bronze + salle de vie, présentation Insta, logo II
     {
         name: "Argent",
         price: "CHF 2'500",
@@ -327,16 +338,20 @@ const packs: Pack[] = [
             credits: true,
             flyers: true,
             logo_i: true,
+
             salle: true,
             presentation: true,
             logo_ii: true,
-            distribution: true,
-            drapeau: true,
+
+            distribution: false,
+            drapeau: false,
             pull: false,
             titre_pp: false,
             conference: false,
         },
     },
+
+    // Or = Argent + distribution, maillot (logo), drapeau événement, présentation durant un cours
     {
         name: "Or",
         price: "CHF 5'000",
@@ -344,16 +359,21 @@ const packs: Pack[] = [
             credits: true,
             flyers: true,
             logo_i: true,
+
             salle: true,
             presentation: true,
             logo_ii: true,
+
             distribution: true,
             drapeau: true,
-            pull: true,
+            pull: true,          // maillot (logo)
+            conference: true,    // présentation en cours (45' + pause)
+
             titre_pp: false,
-            conference: false,
         },
     },
+
+    // Platine = Or + titre de partenaire principal & conférence (logo très grand dans les visuels)
     {
         name: "Platine",
         price: "CHF 7'500",
@@ -361,20 +381,46 @@ const packs: Pack[] = [
             credits: true,
             flyers: true,
             logo_i: true,
+
             salle: true,
             presentation: true,
             logo_ii: true,
+
             distribution: true,
             drapeau: true,
             pull: true,
+            conference: true,    // format extensible type conférence
+
             titre_pp: true,
-            conference: true,
         },
     },
 ];
 
+/* ——— Icônes par pack (identiques à avant) ——— */
+type IconComp = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+const packMeta: Record<string, { Icon: IconComp; bubble: string; ring: string }> = {
+    Bronze: { Icon: Medal, bubble: "bg-amber-100 text-amber-700", ring: "ring-amber-200" },
+    Argent: { Icon: Medal, bubble: "bg-zinc-100 text-zinc-700", ring: "ring-zinc-200" },
+    Or: { Icon: Trophy, bubble: "bg-yellow-100 text-yellow-700", ring: "ring-yellow-200" },
+    Platine: { Icon: Gem, bubble: "bg-sky-100 text-sky-700", ring: "ring-sky-200" },
+};
+
+const PackIcon: React.FC<{ name: string; className?: string }> = ({ name, className }) => {
+    const meta = packMeta[name] ?? packMeta.Bronze;
+    const { Icon, bubble, ring } = meta;
+    return (
+        <div
+            className={cx("size-9 md:size-10 grid place-items-center rounded-xl ring-1", bubble, ring, className)}
+            aria-hidden="true"
+        >
+            <Icon className="size-5 md:size-6" />
+        </div>
+    );
+};
+
+/* ——— Tri diagonal identique ——— */
 const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
-    useMemo(() => {
+    React.useMemo(() => {
         const firstIdx: Record<string, number> = {};
         features.forEach((f) => {
             let i0 = packs.length;
@@ -392,12 +438,14 @@ const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
         });
     }, [features, packs]);
 
-/* ===================== Section 2 — Packs ===================== */
+/* ===================== Section — Packs ===================== */
 const SectionOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
+
     return (
         <section id="packs" className="scroll-mt-24">
             <div className="grid gap-6">
+                {/* Titre */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <Handshake className="size-6 text-emerald-700" />
@@ -405,12 +453,15 @@ const SectionOffers: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Vue cartes (mobile-first) */}
+                {/* — Cartes mobile — */}
                 <div className="grid gap-4 md:hidden">
                     {packs.map((p) => (
                         <SectionCard key={p.name} className="divide-y divide-emerald-100">
                             <div className="flex items-center justify-between pb-3">
-                                <div className="text-lg font-semibold">{p.name}</div>
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <PackIcon name={p.name} />
+                                    <div className="text-lg font-semibold truncate">{p.name}</div>
+                                </div>
                                 <div className="text-emerald-700 font-bold">{p.price}</div>
                             </div>
                             <ul className="pt-3 grid gap-2 text-[15px] text-emerald-900/90">
@@ -429,21 +480,25 @@ const SectionOffers: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Tableau (dès md) */}
+                {/* — Tableau desktop + colonne arguments — */}
                 <div className="hidden md:grid lg:grid-cols-[2fr_1fr] gap-6">
+                    {/* Tableau */}
                     <SectionCard>
                         <div className="overflow-x-auto text-sm">
                             <table className="min-w-full">
                                 <thead>
                                     <tr>
-                                        <th className="text-left py-2 pr-3 font-semibold">Prestations</th>
+                                        <th className="text-left py-2 pr-3 font-semibold whitespace-nowrap">Prestations</th>
                                         {packs.map((p) => (
                                             <th
                                                 key={p.name}
-                                                className="px-3 py-2 text-center font-semibold text-xs whitespace-nowrap"
+                                                className="px-3 py-3 text-center font-semibold text-xs whitespace-nowrap align-top"
                                             >
-                                                <div>{p.name}</div>
-                                                <div className="text-emerald-700 font-bold">{p.price}</div>
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <PackIcon name={p.name} />
+                                                    <div className="mt-1">{p.name}</div>
+                                                    <div className="text-emerald-700 font-bold">{p.price}</div>
+                                                </div>
                                             </th>
                                         ))}
                                     </tr>
@@ -467,6 +522,14 @@ const SectionOffers: React.FC = () => {
                             </table>
                         </div>
 
+                        {/* Légende + note */}
+                        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-emerald-900/70">
+                            <div className="flex items-center gap-2"><PackIcon name="Bronze" /> Bronze</div>
+                            <div className="flex items-center gap-2"><PackIcon name="Argent" /> Argent</div>
+                            <div className="flex items-center gap-2"><PackIcon name="Or" /> Or</div>
+                            <div className="flex items-center gap-2"><PackIcon name="Platine" /> Platine</div>
+                        </div>
+
                         <div className="mt-2 text-xs italic text-emerald-900/70">
                             * Pour plus de précision, voir <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
                         </div>
@@ -487,17 +550,17 @@ const SectionOffers: React.FC = () => {
                             <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
                                 <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & lors des événements (WE ski GC, Balélec…).</li>
-                                <li>• Assurer une présence durable avec votre <b>logo sur nos pulls</b> de section.</li>
+                                <li>• Assurer une présence durable avec votre <b>logo sur nos maillots</b> et nos supports.</li>
                             </ul>
                         </div>
                     </SectionCard>
                 </div>
 
-                {/* Détail des contreparties */}
+                {/* — Détail des contreparties — */}
                 <SectionCard>
                     <h3 className="font-semibold">Détail des contreparties</h3>
                     <div className="mt-3 grid md:grid-cols-2 gap-4 text-[15px] md:text-base text-emerald-900/85">
-                        {features.map((f) => (
+                        {baseFeatures.map((f) => (
                             <div key={f.key}>
                                 <div className="font-medium">{f.label}</div>
                                 <div className="opacity-85">{featureDescriptions[f.key]}</div>
@@ -766,7 +829,7 @@ export default function SponsorPage() {
                     © {new Date().getFullYear()} Travel GC — Suivez-nous sur{" "}
                     <a
                         className="underline underline-offset-4 hover:text-emerald-700"
-                        href="https://instagram.com/travel__gc"
+                        href="https://instagram.com/@travel__gc"
                         target="_blank"
                         rel="noreferrer"
                     >
