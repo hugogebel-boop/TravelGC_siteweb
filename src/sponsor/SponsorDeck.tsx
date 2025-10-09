@@ -49,6 +49,7 @@ const SectionCard: React.FC<React.PropsWithChildren<{ className?: string }>> = (
 );
 
 /* ===================== Header ===================== */
+/* ===================== Header ===================== */
 const Header: React.FC = () => {
     return (
         <header className="sticky top-0 z-40 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 border-b border-emerald-100">
@@ -61,8 +62,13 @@ const Header: React.FC = () => {
             <Container className="py-3 md:py-4">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3 min-w-0">
-                        <div className="size-9 shrink-0 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold">
-                            TG
+                        {/* Logo monogramme → GC */}
+                        <div
+                            className="size-9 shrink-0 rounded-xl bg-emerald-600 grid place-items-center text-white font-extrabold tracking-tight"
+                            aria-label="Travel GC"
+                            title="Travel GC"
+                        >
+                            GC
                         </div>
                         <div className="min-w-0">
                             <div className="font-semibold truncate">Travel GC</div>
@@ -75,28 +81,19 @@ const Header: React.FC = () => {
                     <nav className="hidden md:flex items-center gap-1">
                         <a
                             href="#visites"
-                            className={cx(
-                                "rounded-xl px-3 py-2 text-sm font-medium",
-                                brand.btn.ghost
-                            )}
+                            className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.ghost)}
                         >
                             Visites GC
                         </a>
                         <a
                             href="#packs"
-                            className={cx(
-                                "rounded-xl px-3 py-2 text-sm font-medium",
-                                brand.btn.ghost
-                            )}
+                            className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.ghost)}
                         >
                             Packs
                         </a>
                         <a
                             href="#contact"
-                            className={cx(
-                                "rounded-xl px-3 py-2 text-sm font-medium",
-                                brand.btn.solid
-                            )}
+                            className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}
                         >
                             Nous contacter
                         </a>
@@ -105,10 +102,7 @@ const Header: React.FC = () => {
                     {/* CTA mobile */}
                     <a
                         href="#contact"
-                        className={cx(
-                            "md:hidden rounded-xl px-3 py-2 text-sm font-medium",
-                            brand.btn.solid
-                        )}
+                        className={cx("md:hidden rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}
                     >
                         Contact
                     </a>
