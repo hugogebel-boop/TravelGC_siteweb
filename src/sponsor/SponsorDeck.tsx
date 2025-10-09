@@ -591,13 +591,13 @@ const SectionContact: React.FC = () => {
                                     </div>
 
                                     <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                        <div className="font-medium">Charlotte Nom</div>
+                                        <div className="font-medium">Charlotte Maître</div>
                                         <div className="text-sm opacity-80">Présidente</div>
                                         <a
                                             className="mt-1 block text-sm underline underline-offset-4 break-all"
                                             href="mailto:margot.chapalain@epfl.ch"
                                         >
-                                            charlotte.nom@epfl.ch
+                                            charlotte.maitre@epfl.ch
                                         </a>
                                     </div>
                                 </div>
