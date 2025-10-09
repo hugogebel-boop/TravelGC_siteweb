@@ -266,145 +266,89 @@ const SectionVisits: React.FC = () => (
     </section>
 );
 
-/* ===================== Packs sponsoring — version avec présentation vs conférence ===================== */
-/* Icônes attendues en haut :
-   import { Handshake, Check, Minus, Medal, Trophy, Gem } from "lucide-react";
-   (SectionCard, Container, cx, brand doivent déjà exister)
-*/
+/* ===================== Packs sponsoring — données & UI ===================== */
+
+/* ===================== Packs sponsoring — données & UI complètes ===================== */
 
 type Feature = { key: string; label: string };
 
-/* Libellés (pull → maillot) + séparation des prises de parole */
 const baseFeatures: Feature[] = [
-    { key: "credits", label: "Crédits" },
+    { key: "credits", label: "Mention officielle" },
     { key: "flyers", label: "Flyers" },
-    { key: "logo_i", label: "Logo type I" },
-    { key: "salle", label: "Salle de vie" },
-    { key: "presentation_instagram", label: "Présentation (Instagram)" },
-    { key: "logo_ii", label: "Logo type II" },
-    { key: "distribution", label: "Distribution" },
-    { key: "drapeau", label: "Drapeau événement" },
-    { key: "pull", label: "Maillot (logo)" },
-    { key: "presentation_cours", label: "Présentation en cours (45' + pause)" }, // OR
-    { key: "conference_epfl", label: "Conférence EPFL (audience large)" },       // PLATINE
-    { key: "titre_pp", label: "Titre de partenaire principal" },
+    { key: "logo_i", label: "Logo affiches" },
+    { key: "salle", label: "Affiche salle GC" },
+    { key: "presentation_instagram", label: "Post Instagram" },
+    { key: "logo_ii", label: "Logo officiel" },
+    { key: "distribution", label: "Produits offerts" },
+    { key: "drapeau", label: "Bannière" },
+    { key: "pull", label: "Logo maillot" },
+    { key: "presentation_cours", label: "Présentation cours" },  // Or
+    { key: "conference_epfl", label: "Conférence EPFL" },     // Platine
+    { key: "titre_pp", label: "Partenaire principal" },
 ];
 
-/* Descriptions détaillées */
 const featureDescriptions: Record<string, string> = {
-    credits:
-        "Votre entreprise est honorée dans nos annonces et remerciements publics.",
-    flyers:
-        "Vos flyers sont présentés dans notre salle de vie.",
-    logo_i:
-        "Logo sur nos affiches d’événements sur le campus (format standard).",
-    salle:
-        "Affichage promotionnel dans notre salle de vie (offres, stages, info).",
-    presentation_instagram:
-        "Publication dédiée sur Instagram (@travel__gc).",
-    logo_ii:
-        "Logo sur toutes les annonces (affiches & réseaux) + drapeau AEGC. En Platine, visibilité accrue (logo très grand).",
-    distribution:
-        "Distribution de vos produits lors de nos événements (si souhaité).",
-    drapeau:
-        "Bannière/roll-up mis en avant pendant nos événements.",
-    pull:
-        "Logo sur nos maillots de foot officiels (forte visibilité sur le campus).",
-    presentation_cours:
-        "Intervention en contexte académique pendant un cours : ~45 minutes + pause questions.",
-    conference_epfl:
-        "Conférence à l’EPFL avec audience plus large (ouverture à l’ensemble des étudiant·e·s intéressé·e·s).",
-    titre_pp:
-        "Mention de partenaire principal + remerciements spécifiques.",
+    credits: "Remerciements officiels dans nos communications.",
+    flyers: "Présence de vos supports dans notre salle de vie.",
+    logo_i: "Logo sur nos affiches d’événements (format standard).",
+    salle: "Affichage dans la salle de vie de la section GC.",
+    presentation_instagram: "Publication dédiée sur @travel__gc.",
+    logo_ii: "Logo sur l’ensemble de nos supports officiels.",
+    distribution: "Produits/échantillons offerts lors d’événements.",
+    drapeau: "Bannière/roll-up mis en avant sur site.",
+    pull: "Logo sur les maillots de foot officiels.",
+    presentation_cours: "Intervention ~45' pendant un cours (Q&A inclus).",
+    conference_epfl: "Conférence ouverte à l’ensemble du campus EPFL.",
+    titre_pp: "Statut de partenaire principal du voyage.",
 };
 
-/* Packs (Argent = Bronze + … ; Or = Argent + … ; Platine = Or + …) */
 type Pack = { name: string; price: string; grants: Record<string, boolean> };
+
+/* Progression validée
+   Bronze = crédits, flyers, logo I
+   Argent = Bronze + salle, insta, logo II
+   Or     = Argent + distribution, maillot, bannière, présentation cours
+   Platine= Or + partenaire principal, conférence EPFL
+*/
 const packs: Pack[] = [
-    // Bronze = crédits, flyers, logo I
     {
         name: "Bronze",
         price: "CHF 1'000",
         grants: {
-            credits: true,
-            flyers: true,
-            logo_i: true,
-
-            salle: false,
-            presentation_instagram: false,
-            logo_ii: false,
-            distribution: false,
-            drapeau: false,
-            pull: false,
-            presentation_cours: false,
-            conference_epfl: false,
-            titre_pp: false,
+            credits: true, flyers: true, logo_i: true,
+            salle: false, presentation_instagram: false, logo_ii: false,
+            distribution: false, drapeau: false, pull: false, presentation_cours: false,
+            conference_epfl: false, titre_pp: false,
         },
     },
-
-    // Argent = Bronze + salle de vie, post Instagram, logo II
     {
         name: "Argent",
         price: "CHF 2'500",
         grants: {
-            credits: true,
-            flyers: true,
-            logo_i: true,
-
-            salle: true,
-            presentation_instagram: true,
-            logo_ii: true,
-
-            distribution: false,
-            drapeau: false,
-            pull: false,
-            presentation_cours: false,
-            conference_epfl: false,
-            titre_pp: false,
+            credits: true, flyers: true, logo_i: true,
+            salle: true, presentation_instagram: true, logo_ii: true,
+            distribution: false, drapeau: false, pull: false, presentation_cours: false,
+            conference_epfl: false, titre_pp: false,
         },
     },
-
-    // Or = Argent + distribution, maillot, drapeau, présentation en cours (45' + pause)
     {
         name: "Or",
         price: "CHF 5'000",
         grants: {
-            credits: true,
-            flyers: true,
-            logo_i: true,
-
-            salle: true,
-            presentation_instagram: true,
-            logo_ii: true,
-
-            distribution: true,
-            drapeau: true,
-            pull: true,
-            presentation_cours: true, // ← maintenant distinct
-            conference_epfl: false,
-            titre_pp: false,
+            credits: true, flyers: true, logo_i: true,
+            salle: true, presentation_instagram: true, logo_ii: true,
+            distribution: true, drapeau: true, pull: true, presentation_cours: true,
+            conference_epfl: false, titre_pp: false,
         },
     },
-
-    // Platine = Or + titre partenaire principal + conférence EPFL (audience large, logo très grand)
     {
         name: "Platine",
         price: "CHF 7'500",
         grants: {
-            credits: true,
-            flyers: true,
-            logo_i: true,
-
-            salle: true,
-            presentation_instagram: true,
-            logo_ii: true,
-
-            distribution: true,
-            drapeau: true,
-            pull: true,
-            presentation_cours: true,  // compris aussi
-            conference_epfl: true,     // ← niveau Platine
-            titre_pp: true,
+            credits: true, flyers: true, logo_i: true,
+            salle: true, presentation_instagram: true, logo_ii: true,
+            distribution: true, drapeau: true, pull: true, presentation_cours: true,
+            conference_epfl: true, titre_pp: true,
         },
     },
 ];
@@ -428,7 +372,7 @@ const PackIcon: React.FC<{ name: string; className?: string }> = ({ name, classN
     );
 };
 
-/* ——— Tri diagonal (inchangé) ——— */
+/* ——— Tri diagonal pour lisibilité ——— */
 const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
     React.useMemo(() => {
         const firstIdx: Record<string, number> = {};
@@ -445,23 +389,22 @@ const useDiagonalFeatures = (features: Feature[], packs: Pack[]) =>
         });
     }, [features, packs]);
 
-/* ===================== Section — Packs (UI identique) ===================== */
+/* ===================== Section — Packs ===================== */
 const SectionOffers: React.FC = () => {
     const features = useDiagonalFeatures(baseFeatures, packs);
 
     return (
         <section id="packs" className="scroll-mt-24">
             <div className="grid gap-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Handshake className="size-6 text-emerald-700" />
-                        <h2 className="text-xl sm:text-2xl font-semibold">Packs sponsoring</h2>
-                    </div>
+                {/* Titre */}
+                <div className="flex items-center gap-2">
+                    <Handshake className="size-6 text-emerald-700" />
+                    <h2 className="text-xl sm:text-2xl font-semibold">Packs sponsoring</h2>
                 </div>
 
-                {/* Cartes mobile */}
+                {/* ===== Cartes (mobile-first) ===== */}
                 <div className="grid gap-4 md:hidden">
-                    {packs.map((p) => (
+                    {packs.map((p, packIndex) => (
                         <SectionCard key={p.name} className="divide-y divide-emerald-100">
                             <div className="flex items-center justify-between pb-3">
                                 <div className="flex items-center gap-3 min-w-0">
@@ -470,32 +413,52 @@ const SectionOffers: React.FC = () => {
                                 </div>
                                 <div className="text-emerald-700 font-bold">{p.price}</div>
                             </div>
+
                             <ul className="pt-3 grid gap-2 text-[15px] text-emerald-900/90">
-                                {features.map((f) => (
-                                    <li key={f.key} className="flex items-center justify-between">
-                                        <span className="pr-3">{f.label}</span>
-                                        {p.grants[f.key] ? (
-                                            <Check className="size-4 shrink-0 text-emerald-700" />
-                                        ) : (
-                                            <Minus className="size-4 shrink-0 text-emerald-300" />
-                                        )}
-                                    </li>
-                                ))}
+                                {features.map((f) => {
+                                    const available = p.grants[f.key];
+                                    const prevAvailable = packIndex > 0 ? packs[packIndex - 1].grants[f.key] : false;
+
+                                    const textClass = !available
+                                        ? "text-emerald-400/60"
+                                        : !prevAvailable
+                                            ? "font-semibold text-emerald-900" // nouveau dans ce pack
+                                            : "text-emerald-800";              // déjà inclus avant
+
+                                    const iconClass = !available ? "text-emerald-300" : "text-emerald-700";
+
+                                    return (
+                                        <li key={f.key} className="flex items-center justify-between">
+                                            <span className={cx("pr-3", textClass)}>{f.label}</span>
+                                            {available ? (
+                                                <Check className={cx("size-4 shrink-0", iconClass)} />
+                                            ) : (
+                                                <Minus className={cx("size-4 shrink-0", iconClass)} />
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </SectionCard>
                     ))}
                 </div>
 
-                {/* Tableau desktop + colonne arguments */}
+                {/* ===== Tableau (desktop/tablette) ===== */}
                 <div className="hidden md:grid lg:grid-cols-[2fr_1fr] gap-6">
+                    {/* Tableau comparatif */}
                     <SectionCard>
                         <div className="overflow-x-auto text-sm">
                             <table className="min-w-full">
                                 <thead>
                                     <tr>
-                                        <th className="text-left py-2 pr-3 font-semibold whitespace-nowrap">Prestations</th>
+                                        <th className="text-left py-2 pr-3 font-medium whitespace-nowrap">
+                                            Prestations
+                                        </th>
                                         {packs.map((p) => (
-                                            <th key={p.name} className="px-3 py-3 text-center font-semibold text-xs whitespace-nowrap align-top">
+                                            <th
+                                                key={p.name}
+                                                className="px-3 py-3 text-center font-semibold text-xs whitespace-nowrap align-top"
+                                            >
                                                 <div className="flex flex-col items-center gap-1">
                                                     <PackIcon name={p.name} />
                                                     <div className="mt-1">{p.name}</div>
@@ -505,19 +468,50 @@ const SectionOffers: React.FC = () => {
                                         ))}
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    {features.map((f, idx) => (
-                                        <tr key={f.key} className={idx % 2 ? "bg-emerald-50/40" : ""}>
-                                            <td className="py-2 pr-3 whitespace-nowrap">{f.label}</td>
-                                            {packs.map((p) => (
-                                                <td key={p.name + f.key} className="px-3 py-2 text-center">
-                                                    {p.grants[f.key] ? (
-                                                        <Check className="inline size-4 text-emerald-700" />
-                                                    ) : (
-                                                        <Minus className="inline size-4 text-emerald-300" />
-                                                    )}
-                                                </td>
-                                            ))}
+                                    {features.map((f, rowIdx) => (
+                                        <tr
+                                            key={f.key}
+                                            className={rowIdx % 2 ? "bg-emerald-50/40" : ""}
+                                        >
+                                            {/* colonne de gauche — pas en gras */}
+                                            <td className="py-2 pr-3 whitespace-nowrap text-emerald-900/90">
+                                                {f.label}
+                                            </td>
+
+                                            {/* cellules packs : icônes seules */}
+                                            {packs.map((p, packIndex) => {
+                                                const available = p.grants[f.key];
+                                                const prevAvailable =
+                                                    packIndex > 0 ? packs[packIndex - 1].grants[f.key] : false;
+
+                                                const colorClass = !available
+                                                    ? "text-emerald-300"
+                                                    : !prevAvailable
+                                                        ? "text-emerald-900" // nouveau → plus foncé
+                                                        : "text-emerald-700"; // déjà inclus → normal
+
+                                                const strokeWidth = !available ? 1.6 : !prevAvailable ? 2.6 : 2.0;
+
+                                                return (
+                                                    <td key={p.name + f.key} className="px-3 py-2 text-center">
+                                                        {available ? (
+                                                            <Check
+                                                                className={cx("inline size-5", colorClass)}
+                                                                strokeWidth={strokeWidth}
+                                                                aria-label={`${f.label} — inclus${!prevAvailable ? " (nouveau)" : ""}`}
+                                                            />
+                                                        ) : (
+                                                            <Minus
+                                                                className={cx("inline size-5", colorClass)}
+                                                                strokeWidth={strokeWidth}
+                                                                aria-label={`${f.label} — non inclus`}
+                                                            />
+                                                        )}
+                                                    </td>
+                                                );
+                                            })}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -525,19 +519,12 @@ const SectionOffers: React.FC = () => {
                         </div>
 
                         {/* Légende + note */}
-                        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-emerald-900/70">
-                            <div className="flex items-center gap-2"><PackIcon name="Bronze" /> Bronze</div>
-                            <div className="flex items-center gap-2"><PackIcon name="Argent" /> Argent</div>
-                            <div className="flex items-center gap-2"><PackIcon name="Or" /> Or</div>
-                            <div className="flex items-center gap-2"><PackIcon name="Platine" /> Platine</div>
-                        </div>
-
                         <div className="mt-2 text-xs italic text-emerald-900/70">
-                            * Pour plus de précision, voir <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
+                            * Pour les descriptions détaillées, voir la section <span className="font-medium">« Détail des contreparties »</span> ci-dessous.
                         </div>
                     </SectionCard>
 
-                    {/* Pourquoi nous sponsoriser */}
+                    {/* Pourquoi nous sponsoriser — inchangé */}
                     <SectionCard className="space-y-4">
                         <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
                             Pourquoi nous sponsoriser ?
@@ -551,16 +538,15 @@ const SectionOffers: React.FC = () => {
                             <div className="font-semibold text-lg">Une opportunité pour…</div>
                             <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
                                 <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
-                                <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & lors des événements (WE ski GC, Balélec…).</li>
-                                <li>• Assurer une présence durable avec votre <b>logo sur nos maillots</b> et nos supports.</li>
+                                <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
+                                <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
                         </div>
                     </SectionCard>
                 </div>
-
                 {/* Détail des contreparties */}
                 <SectionCard>
-                    <h3 className="font-semibold">Détail des contreparties</h3>
+                    <h3 className="font-semibold">Détail des prestations</h3>
                     <div className="mt-3 grid md:grid-cols-2 gap-4 text-[15px] md:text-base text-emerald-900/85">
                         {baseFeatures.map((f) => (
                             <div key={f.key}>
