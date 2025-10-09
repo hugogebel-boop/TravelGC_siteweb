@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 
 import hero from "../assets/image.jpg";
-import img1 from "../assets/visit_megyeri.jpg";
-import img2 from "../assets/visit_m4.jpg";
+import img1 from "../assets/visit_megyeri.webp";
+import img2 from "../assets/visit_kiskore.jpg"; // ← remplacé: était ../assets/visit_m4.jpg
 
 /* ===================== Constantes ===================== */
 const FORM_ENDPOINT = "https://formspree.io/f/xeorerdy";
@@ -219,10 +219,10 @@ type Visit = {
 
 const visits: Visit[] = [
     {
-        key: "m4",
-        title: "Ligne M4 du métro de Budapest",
+        key: "kiskore",
+        title: "Barrage hydroélectrique de Kisköre (Tisza)",
         blurb:
-            "Géotechnique & structures souterraines : parois moulées, top-down, intégration urbaine et contraintes de sol. Théorie & pratique réunies sur une infrastructure majeure.",
+            "Hydraulic & energy engineering : barrage à basse chute, turbines Kaplan, dissipation d’énergie et régulation des crues. Focus géotechnique sur la fondation, drainage et contrôle des pressions interstitielles.",
         img: img2,
     },
     {
