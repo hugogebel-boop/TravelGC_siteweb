@@ -144,7 +144,7 @@ const SectionIntro: React.FC = () => {
                         Voyage d’étude du Génie civil EPFL
                     </div>
                     <h1 className="mt-3 text-3xl md:text-5xl font-extrabold leading-tight">
-                        Travel GC — Sponsoring
+                        Sponsoring Travel GC EPFL
                     </h1>
                     <div
                         className="mt-1 text-2xl md:text-3xl select-none"
@@ -155,7 +155,7 @@ const SectionIntro: React.FC = () => {
                     <p className="mt-4 text-emerald-900/85 leading-relaxed text-[15px] md:text-base">
                         Nous organisons le voyage d’étude des étudiant·e·s de{" "}
                         <b>3e année Bachelor en Génie Civil</b> à l’EPFL. Du{" "}
-                        <b>7 au 15 juillet 2025</b>, notre destination sera <b>Budapest</b> :
+                        <b>5 au 13 juillet 2025</b>, notre destination sera <b>Budapest</b> :
                         une ville riche en architecture, en histoire et en ouvrages
                         d’ingénierie.
                     </p>
@@ -179,7 +179,7 @@ const SectionIntro: React.FC = () => {
                             <p className="mt-2 text-emerald-900/90 text-[15px] md:text-base leading-relaxed">
                                 Rendre ce voyage accessible à tou·te·s, en associant la{" "}
                                 <b>découverte technique</b> à l’<b>expérience collective</b>. Nous
-                                aimons partager cette aventure avec nos partenaires.
+                                aimons partager cette aventure avec vous comme partenaires.
                             </p>
                         </div>
                     </div>
@@ -223,7 +223,7 @@ const visits: Visit[] = [
         key: "megyeri",
         title: "Pont Megyeri au-dessus du Danube",
         blurb:
-            "Grand haubané : efforts dans les câbles, stabilité dynamique, esthétique des grandes portées et coordination ingénierie/architecture.",
+            "Grand pont haubané : efforts dans les câbles, stabilité dynamique, esthétique des grandes portées et coordination ingénierie/architecture.",
         img: img1,
     },
 ];
@@ -531,7 +531,7 @@ const SectionOffers: React.FC = () => {
                         <div>
                             <div className="font-semibold text-lg">Une opportunité pour…</div>
                             <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
-                                <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
+                                <li>• Se faire connaître auprès des <b>250 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
@@ -620,13 +620,13 @@ const SectionContact: React.FC = () => {
                                 </div>
                                 <div className="mt-2 grid sm:grid-cols-2 gap-4 text-emerald-900/90">
                                     <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                        <div className="font-medium">Riwa Nom</div>
+                                        <div className="font-medium">Riwa Naoura</div>
                                         <div className="text-sm opacity-80">Responsable sponsoring</div>
                                         <a
                                             className="mt-1 block text-sm underline underline-offset-4 break-all"
-                                            href="mailto:chaimaa.ouchicha@epfl.ch"
+                                            href="mailto:riwa.naoura@epfl.ch"
                                         >
-                                            riwa.nom@epfl.ch
+                                            riwa.naoura@epfl.ch
                                         </a>
                                         <div className="text-sm mt-1">
                                             <a href="tel:+41782298451" className="hover:underline">
@@ -640,7 +640,7 @@ const SectionContact: React.FC = () => {
                                         <div className="text-sm opacity-80">Présidente</div>
                                         <a
                                             className="mt-1 block text-sm underline underline-offset-4 break-all"
-                                            href="mailto:margot.chapalain@epfl.ch"
+                                            href="mailto:charlotte.maitre@epfl.ch"
                                         >
                                             charlotte.maitre@epfl.ch
                                         </a>
