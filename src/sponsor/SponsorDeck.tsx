@@ -179,7 +179,7 @@ const SectionIntro: React.FC = () => {
                             <p className="mt-2 text-emerald-900/90 text-[15px] md:text-base leading-relaxed">
                                 Rendre ce voyage accessible à tou·te·s, en associant la{" "}
                                 <b>découverte technique</b> à l’<b>expérience collective</b>. Nous
-                                aimons partager cette aventure avec vous comme partenaires.
+                                aimerions partager cette aventure avec vous comme partenaires.
                             </p>
                         </div>
                     </div>
@@ -534,7 +534,7 @@ const SectionOffers: React.FC = () => {
                         <div>
                             <div className="font-semibold text-lg">Une opportunité pour…</div>
                             <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
-                                <li>• Se faire connaître auprès des <b>250 étudiant·e·s</b> de la section Génie Civil.</li>
+                                <li>• Se faire connaître auprès des <b>350 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
