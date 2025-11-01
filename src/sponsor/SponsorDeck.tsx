@@ -623,16 +623,16 @@ const SectionContact: React.FC = () => {
                                 </div>
                                 <div className="mt-2 grid sm:grid-cols-2 gap-4 text-emerald-900/90">
                                     <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                        <div className="font-medium">Riwa Naoura</div>
+                                        <div className="font-medium">Luca Tufo</div>
                                         <div className="text-sm opacity-80">Responsable sponsoring</div>
                                         <a
                                             className="mt-1 block text-sm underline underline-offset-4 break-all"
-                                            href="mailto:riwa.naoura@epfl.ch"
+                                            href="mailto:luca.tufo@epfl.ch"
                                         >
-                                            riwa.naoura@epfl.ch
+                                            luca.tufo@epfl.ch
                                         </a>
                                         <div className="text-sm mt-1">
-                                            <a href="tel:+41782298451" className="hover:underline">
+                                            <a href="tel:+41791234567" className="hover:underline">
                                                 +41 79 123 45 67
                                             </a>
                                         </div>
@@ -657,9 +657,9 @@ const SectionContact: React.FC = () => {
                                 </div>
                                 <a
                                     className="mt-2 inline-flex items-center gap-2 text-emerald-800 underline underline-offset-4 break-all"
-                                    href="mailto:contact@travelgc.ch"
+                                    href="mailto:travelgc@epfl.ch"
                                 >
-                                    <Mail className="size-4" /> contact@travelgc.ch
+                                    <Mail className="size-4" /> travelgc@epfl.ch
                                 </a>
                             </div>
                         </div>
