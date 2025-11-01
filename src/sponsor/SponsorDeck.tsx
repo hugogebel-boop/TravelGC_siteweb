@@ -606,8 +606,8 @@ const SectionContact: React.FC = () => {
                     <div className="hidden md:flex items-center gap-6 text-sm text-emerald-900/80">
                         <div className="flex items-center gap-2">
                             <Phone className="size-4" />{" "}
-                            <a href="tel:+41782298451" className="hover:underline">
-                                +41 78 123 45 67
+                            <a href="tel:+41763587628" className="hover:underline">
+                                +41 76 358 76 28
                             </a>{" "}
                             (Sponsoring)
                         </div>
@@ -632,8 +632,8 @@ const SectionContact: React.FC = () => {
                                             luca.tufo@epfl.ch
                                         </a>
                                         <div className="text-sm mt-1">
-                                            <a href="tel:+41791234567" className="hover:underline">
-                                                +41 79 123 45 67
+                                            <a href="tel:+41763587628" className="hover:underline">
+                                                +41 76 358 76 28
                                             </a>
                                         </div>
                                     </div>
