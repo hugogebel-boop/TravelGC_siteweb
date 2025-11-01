@@ -534,7 +534,7 @@ const SectionOffers: React.FC = () => {
                         <div>
                             <div className="font-semibold text-lg">Une opportunité pour…</div>
                             <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
-                                <li>• Se faire connaître auprès des <b>350 étudiant·e·s</b> de la section Génie Civil.</li>
+                                <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
@@ -568,6 +568,13 @@ const SectionContact: React.FC = () => {
         setError(null);
 
         const form = e.currentTarget;
+        
+        // Validation: vérifier que tous les champs requis sont remplis
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
         const fd = new FormData(form);
 
         // métadonnées utiles
@@ -680,7 +687,7 @@ const SectionContact: React.FC = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <form onSubmit={onSubmit} className="grid gap-3" noValidate>
+                                <form onSubmit={onSubmit} className="grid gap-3">
                                     {/* Honeypot anti-spam */}
                                     <input
                                         name="_gotcha"
@@ -756,6 +763,7 @@ const SectionContact: React.FC = () => {
                                             id="message"
                                             name="message"
                                             rows={4}
+                                            required
                                             className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
                                             placeholder="Parlez-nous de vos objectifs…"
                                         />
