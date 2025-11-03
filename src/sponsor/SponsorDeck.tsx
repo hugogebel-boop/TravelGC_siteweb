@@ -454,6 +454,11 @@ const SectionOffers: React.FC = () => {
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
                         </div>
+                        <div className="mt-4 pt-4 border-t border-emerald-200">
+                            <p className="text-[15px] text-emerald-900/85 italic">
+                                <b>Partenaire sur mesure ?</b> Nous sommes ouverts à concevoir des offres personnalisées adaptées à vos besoins, vos objectifs et votre budget. N'hésitez pas à nous contacter pour discuter de votre projet.
+                            </p>
+                        </div>
                     </SectionCard>
                 </div>
 
@@ -536,9 +541,6 @@ const SectionOffers: React.FC = () => {
                         <div className="mt-2 text-xs italic text-emerald-900/70">
                             * Pour les descriptions détaillées, voir la section <span className="font-medium">« Détail des prestations »</span> ci-dessous.
                         </div>
-                        <div className="mt-2 text-xs italic text-emerald-900/70">
-                            * Un seul packs Platine disponible
-                        </div>
                     </SectionCard>
 
                     {/* Pourquoi nous sponsoriser — inchangé */}
@@ -558,6 +560,11 @@ const SectionOffers: React.FC = () => {
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-emerald-200">
+                            <p className="text-[15px] text-emerald-900/85 italic">
+                                <b>Partenaire sur mesure ?</b> Nous sommes ouverts à concevoir des offres personnalisées adaptées à vos besoins, vos objectifs et votre budget. N'hésitez pas à nous contacter pour discuter de votre projet.
+                            </p>
                         </div>
                     </SectionCard>
                 </div>
