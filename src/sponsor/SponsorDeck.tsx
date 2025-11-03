@@ -648,7 +648,7 @@ const SectionContact: React.FC = () => {
                         <div className="space-y-4">
                             <div>
                                 <div className="text-[11px] md:text-xs uppercase tracking-wider text-emerald-700/80 font-semibold">
-                                    Référentes
+                                    Référent·e·s
                                 </div>
                                 <div className="mt-2 grid sm:grid-cols-2 gap-4 text-emerald-900/90">
                                     <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
