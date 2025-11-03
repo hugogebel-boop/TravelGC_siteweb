@@ -437,6 +437,28 @@ const SectionOffers: React.FC = () => {
                     ))}
                 </div>
 
+                {/* ===== Pourquoi nous sponsoriser (mobile) ===== */}
+                <div className="md:hidden">
+                    <SectionCard className="space-y-4">
+                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
+                            Pourquoi nous sponsoriser ?
+                        </div>
+                        <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
+                            <div className="text-center">
+                                Le Travel GC a <b>besoin de vous</b> pour rendre ce voyage accessible au plus grand nombre !
+                            </div>
+                        </div>
+                        <div>
+                            <div className="font-semibold text-lg">Une opportunité pour…</div>
+                            <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
+                                <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
+                                <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
+                                <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
+                            </ul>
+                        </div>
+                    </SectionCard>
+                </div>
+
                 {/* ===== Tableau (desktop/tablette) ===== */}
                 <div className="hidden md:grid lg:grid-cols-[2fr_1fr] gap-6">
                     {/* Tableau comparatif */}
@@ -517,7 +539,7 @@ const SectionOffers: React.FC = () => {
                             * Pour les descriptions détaillées, voir la section <span className="font-medium">« Détail des prestations »</span> ci-dessous.
                         </div>
                         <div className="mt-2 text-xs italic text-emerald-900/70">
-                            * Un seul packs diamant disponible
+                            * Un seul packs Platine disponible
                         </div>
                     </SectionCard>
 
