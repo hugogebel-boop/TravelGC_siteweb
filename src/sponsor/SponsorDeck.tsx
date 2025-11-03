@@ -276,7 +276,6 @@ const baseFeatures: Feature[] = [
     { key: "distribution", label: "Produits offerts" },
     { key: "drapeau", label: "Bannière" },
     { key: "pull", label: "Logo maillot" },
-    { key: "presentation_cours", label: "Présentation cours" },  // Or
     { key: "conference_epfl", label: "Conférence EPFL" },     // Platine
     { key: "titre_pp", label: "Partenaire principal" },
 ];
@@ -291,7 +290,6 @@ const featureDescriptions: Record<string, string> = {
     distribution: "Produits/échantillons offerts lors d’événements.",
     drapeau: "Bannière/roll-up mis en avant sur site.",
     pull: "Logo sur les maillots de foot officiels.",
-    presentation_cours: "Intervention ~45' pendant un cours (Q&A inclus).",
     conference_epfl: "Conférence ouverte à l’ensemble du campus EPFL.",
     titre_pp: "Statut de partenaire principal du voyage.",
 };
@@ -301,7 +299,7 @@ type Pack = { name: string; price: string; grants: Record<string, boolean> };
 /* Progression validée
    Bronze = crédits, flyers, logo I
    Argent = Bronze + salle, insta, logo II
-   Or     = Argent + distribution, maillot, bannière, présentation cours
+   Or     = Argent + distribution, maillot, bannière
    Platine= Or + partenaire principal, conférence EPFL
 */
 const packs: Pack[] = [
@@ -311,7 +309,7 @@ const packs: Pack[] = [
         grants: {
             credits: true, flyers: true, logo_i: true,
             salle: false, presentation_instagram: false, logo_ii: false,
-            distribution: false, drapeau: false, pull: false, presentation_cours: false,
+            distribution: false, drapeau: false, pull: false,
             conference_epfl: false, titre_pp: false,
         },
     },
@@ -321,7 +319,7 @@ const packs: Pack[] = [
         grants: {
             credits: true, flyers: true, logo_i: true,
             salle: true, presentation_instagram: true, logo_ii: true,
-            distribution: false, drapeau: false, pull: false, presentation_cours: false,
+            distribution: false, drapeau: false, pull: false,
             conference_epfl: false, titre_pp: false,
         },
     },
@@ -331,7 +329,7 @@ const packs: Pack[] = [
         grants: {
             credits: true, flyers: true, logo_i: true,
             salle: true, presentation_instagram: true, logo_ii: true,
-            distribution: true, drapeau: true, pull: true, presentation_cours: true,
+            distribution: true, drapeau: true, pull: true,
             conference_epfl: false, titre_pp: false,
         },
     },
@@ -341,7 +339,7 @@ const packs: Pack[] = [
         grants: {
             credits: true, flyers: true, logo_i: true,
             salle: true, presentation_instagram: true, logo_ii: true,
-            distribution: true, drapeau: true, pull: true, presentation_cours: true,
+            distribution: true, drapeau: true, pull: true,
             conference_epfl: true, titre_pp: true,
         },
     },
