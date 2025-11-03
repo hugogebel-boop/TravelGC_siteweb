@@ -11,6 +11,7 @@ import {
     Medal,
     Trophy,
     Gem,
+    Palette,
 } from "lucide-react";
 
 import hero from "../assets/image.jpg";
@@ -437,8 +438,8 @@ const SectionOffers: React.FC = () => {
 
                 {/* ===== Pourquoi nous sponsoriser (mobile) ===== */}
                 <div className="md:hidden">
-                    <SectionCard className="space-y-4">
-                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
+                    <SectionCard className="space-y-5">
+                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2.5">
                             Pourquoi nous sponsoriser ?
                         </div>
                         <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
@@ -447,17 +448,29 @@ const SectionOffers: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <div className="font-semibold text-lg">Une opportunité pour…</div>
-                            <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
+                            <div className="font-semibold text-lg text-emerald-900">Une opportunité pour…</div>
+                            <ul className="mt-3 space-y-2.5 text-emerald-900/90 text-[15px] leading-relaxed">
                                 <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-emerald-200">
-                            <p className="text-[15px] text-emerald-900/85 italic">
-                                <b>Partenaire sur mesure ?</b> Nous sommes ouverts à concevoir des offres personnalisées adaptées à vos besoins, vos objectifs et votre budget. N'hésitez pas à nous contacter pour discuter de votre projet.
-                            </p>
+                        <div className="pt-5 border-t border-emerald-200">
+                            <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/70 p-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5 shrink-0">
+                                        <Palette className="size-5 text-emerald-700" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="font-semibold text-emerald-900 mb-1.5">
+                                            Partenaire sur mesure
+                                        </div>
+                                        <p className="text-[15px] text-emerald-900/85 leading-relaxed">
+                                            Nous sommes ouverts à concevoir des <b>offres personnalisées</b> adaptées à vos besoins, vos objectifs et votre budget. Contactez-nous pour discuter de votre projet.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </SectionCard>
                 </div>
@@ -543,9 +556,9 @@ const SectionOffers: React.FC = () => {
                         </div>
                     </SectionCard>
 
-                    {/* Pourquoi nous sponsoriser — inchangé */}
-                    <SectionCard className="space-y-4">
-                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2">
+                    {/* Pourquoi nous sponsoriser (desktop) */}
+                    <SectionCard className="space-y-5">
+                        <div className="rounded-2xl bg-rose-600 text-white text-center font-semibold px-4 py-2.5">
                             Pourquoi nous sponsoriser ?
                         </div>
                         <div className="rounded-2xl bg-teal-800/90 text-white px-4 py-4">
@@ -554,17 +567,29 @@ const SectionOffers: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <div className="font-semibold text-lg">Une opportunité pour…</div>
-                            <ul className="mt-3 space-y-2 text-emerald-900/90 text-[15px]">
+                            <div className="font-semibold text-lg text-emerald-900">Une opportunité pour…</div>
+                            <ul className="mt-3 space-y-2.5 text-emerald-900/90 text-[15px] leading-relaxed">
                                 <li>• Se faire connaître auprès des <b>450 étudiant·e·s</b> de la section Génie Civil.</li>
                                 <li>• Gagner en visibilité sur le campus (affiches, salle de vie) & événements.</li>
                                 <li>• Valoriser votre marque sur nos <b>maillots</b> et supports officiels.</li>
                             </ul>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-emerald-200">
-                            <p className="text-[15px] text-emerald-900/85 italic">
-                                <b>Partenaire sur mesure ?</b> Nous sommes ouverts à concevoir des offres personnalisées adaptées à vos besoins, vos objectifs et votre budget. N'hésitez pas à nous contacter pour discuter de votre projet.
-                            </p>
+                        <div className="pt-5 border-t border-emerald-200">
+                            <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/70 p-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5 shrink-0">
+                                        <Palette className="size-5 text-emerald-700" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="font-semibold text-emerald-900 mb-1.5">
+                                            Partenaire sur mesure
+                                        </div>
+                                        <p className="text-[15px] text-emerald-900/85 leading-relaxed">
+                                            Nous sommes ouverts à concevoir des <b>offres personnalisées</b> adaptées à vos besoins, vos objectifs et votre budget. Contactez-nous pour discuter de votre projet.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </SectionCard>
                 </div>
