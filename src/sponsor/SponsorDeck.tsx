@@ -801,7 +801,7 @@ const SectionContact: React.FC = () => {
                                                 id="sponsoring_type"
                                                 name="sponsoring_type"
                                                 className="mt-1 w-full rounded-xl border border-emerald-300/70 px-3 py-2 bg-white/80"
-                                                defaultValue="Bronze"
+                                                defaultValue="Platine"
                                             >
                                                 <option>Bronze</option>
                                                 <option>Argent</option>
