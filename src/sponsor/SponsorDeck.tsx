@@ -874,17 +874,102 @@ export default function SponsorPage() {
                     </div>
                 </Container>
             </main>
-            <footer className="mt-10 border-t border-emerald-100/70">
-                <Container className="py-6 text-center text-sm text-emerald-900/70">
-                    © {new Date().getFullYear()} Travel GC — Suivez-nous sur{" "}
-                    <a
-                        className="underline underline-offset-4 hover:text-emerald-700"
-                        href="https://instagram.com/@travel__gc"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        @travel__gc
-                    </a>
+            <footer className="mt-20 border-t border-emerald-200/50 bg-gradient-to-b from-white/50 to-emerald-50/30">
+                <Container>
+                    <div className="py-8 md:py-12">
+                        <div className="grid gap-8 md:grid-cols-3 md:gap-6">
+                            {/* Section Logo & Description */}
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="size-10 rounded-xl bg-emerald-600 grid place-items-center text-white font-extrabold text-lg tracking-tight">
+                                        GC
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-emerald-900">Travel GC</div>
+                                        <div className="text-xs text-emerald-700/80">Voyage d'étude EPFL</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-emerald-900/70 leading-relaxed">
+                                    Association étudiante organisant le voyage d'étude des étudiant·e·s de Génie Civil à l'EPFL.
+                                </p>
+                            </div>
+
+                            {/* Section Liens rapides */}
+                            <div className="space-y-4">
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wider">
+                                    Liens rapides
+                                </h3>
+                                <nav className="flex flex-col gap-2">
+                                    <a
+                                        href="#visites"
+                                        className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
+                                    >
+                                        Visites GC
+                                    </a>
+                                    <a
+                                        href="#packs"
+                                        className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
+                                    >
+                                        Packs sponsoring
+                                    </a>
+                                    <a
+                                        href="#contact"
+                                        className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
+                                    >
+                                        Nous contacter
+                                    </a>
+                                </nav>
+                            </div>
+
+                            {/* Section Contact & Social */}
+                            <div className="space-y-4">
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wider">
+                                    Contact
+                                </h3>
+                                <div className="flex flex-col gap-3">
+                                    <a
+                                        href="mailto:travelgc@epfl.ch"
+                                        className="flex items-center gap-2 text-sm text-emerald-900/80 hover:text-emerald-700 transition-colors w-fit group"
+                                    >
+                                        <Mail className="size-4 group-hover:scale-110 transition-transform" />
+                                        travelgc@epfl.ch
+                                    </a>
+                                    <a
+                                        href="https://instagram.com/travel__gc"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="flex items-center gap-2 text-sm text-emerald-900/80 hover:text-emerald-700 transition-colors w-fit group"
+                                    >
+                                        <Sparkles className="size-4 group-hover:scale-110 transition-transform" />
+                                        @travel__gc
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Séparateur */}
+                        <div className="my-8 h-px bg-gradient-to-r from-transparent via-emerald-200/50 to-transparent" />
+
+                        {/* Bottom section */}
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-emerald-900/70">
+                            <div className="text-center md:text-left">
+                                © {new Date().getFullYear()} Travel GC. Tous droits réservés.
+                            </div>
+                            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center">
+                                <div className="text-emerald-900/60">
+                                    Site conçu et développé par{" "}
+                                    <a
+                                        href="https://smartflowgroup.ch"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="font-medium text-emerald-700 hover:text-emerald-800 underline underline-offset-4 transition-colors"
+                                    >
+                                        smartflow
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </Container>
             </footer>
         </div>
