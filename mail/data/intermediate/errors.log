@@ -1,0 +1,17 @@
+2025-11-03 14:39:06,383 - __main__ - INFO - Chargement sources pour cantons: VD
+2025-11-03 14:39:06,384 - src.sources.suisse_ing - INFO - Scraping suisse.ing pour VD...
+2025-11-03 14:39:08,263 - httpx - INFO - HTTP Request: GET https://suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 301 Moved Permanently"
+2025-11-03 14:39:08,737 - httpx - INFO - HTTP Request: GET https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 404 Not Found"
+2025-11-03 14:39:08,739 - src.sources.suisse_ing - WARNING - Erreur fetch https://suisse.ing/search?canton=VD&specialite=ingenieur-civil: Client error '404 Not Found' for url 'https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-11-03 14:39:11,344 - httpx - INFO - HTTP Request: GET https://suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 301 Moved Permanently"
+2025-11-03 14:39:11,622 - httpx - INFO - HTTP Request: GET https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 404 Not Found"
+2025-11-03 14:39:11,623 - src.sources.suisse_ing - WARNING - Erreur fetch https://suisse.ing/search?canton=VD&specialite=ingenieur-civil: Client error '404 Not Found' for url 'https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-11-03 14:39:14,228 - httpx - INFO - HTTP Request: GET https://suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 301 Moved Permanently"
+2025-11-03 14:39:14,460 - httpx - INFO - HTTP Request: GET https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil "HTTP/1.1 404 Not Found"
+2025-11-03 14:39:14,465 - src.sources.suisse_ing - WARNING - Erreur fetch https://suisse.ing/search?canton=VD&specialite=ingenieur-civil: Client error '404 Not Found' for url 'https://www.suisse.ing/search?canton=VD&specialite=ingenieur-civil'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-11-03 14:39:14,466 - src.sources.suisse_ing - ERROR - Erreur scrape canton VD: RetryError[<Future at 0x1ac03bac7d0 state=finished raised HTTPStatusError>]
+2025-11-03 14:39:14,472 - __main__ - WARNING - Aucune source n'a retourné de données
+2025-11-03 14:39:14,472 - __main__ - ERROR - Aucune donnée à traiter

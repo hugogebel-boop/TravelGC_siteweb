@@ -1,0 +1,4 @@
+"""
+Configuration pour le pipeline.
+"""
+

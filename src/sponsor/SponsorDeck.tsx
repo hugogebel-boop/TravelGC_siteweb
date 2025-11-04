@@ -698,7 +698,7 @@ const SectionContact: React.FC = () => {
                                     </div>
 
                                     <div className="rounded-lg border border-emerald-200/70 p-4 bg-white/60">
-                                        <div className="font-medium">Charlotte Maître</div>
+                                        <div className="font-medium">Charlotte Maitre</div>
                                         <div className="text-sm opacity-80">Présidente</div>
                                         <a
                                             className="mt-1 block text-sm underline underline-offset-4 break-all"
@@ -706,6 +706,11 @@ const SectionContact: React.FC = () => {
                                         >
                                             charlotte.maitre@epfl.ch
                                         </a>
+                                        <div className="text-sm mt-1">
+                                            <a href="tel:+41799033930" className="hover:underline">
+                                                +41 79 903 39 30
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
