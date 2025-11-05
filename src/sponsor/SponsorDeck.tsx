@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
     Mail,
@@ -23,6 +23,18 @@ const FORM_ENDPOINT = "https://formspree.io/f/xeorerdy";
 
 const cx = (...c: Array<string | false | null | undefined>) =>
     c.filter(Boolean).join(" ");
+
+// Défilement vers une section sans laisser de hash dans l'URL
+function scrollToId(event: React.MouseEvent<HTMLAnchorElement>, id: string) {
+    event.preventDefault();
+    const target = document.getElementById(id);
+    if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", window.location.pathname);
+        }
+    }
+}
 
 const brand = {
     bg: "bg-gradient-to-br from-emerald-50 via-white to-teal-50",
@@ -82,18 +94,21 @@ const Header: React.FC = () => {
                     <nav className="hidden md:flex items-center gap-1">
                         <a
                             href="#visites"
+                            onClick={(e) => scrollToId(e, "visites")}
                             className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.ghost)}
                         >
                             Visites GC
                         </a>
                         <a
                             href="#packs"
+                            onClick={(e) => scrollToId(e, "packs")}
                             className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.ghost)}
                         >
                             Packs
                         </a>
                         <a
                             href="#contact"
+                            onClick={(e) => scrollToId(e, "contact")}
                             className={cx("rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}
                         >
                             Nous contacter
@@ -103,6 +118,7 @@ const Header: React.FC = () => {
                     {/* CTA mobile */}
                     <a
                         href="#contact"
+                        onClick={(e) => scrollToId(e, "contact")}
                         className={cx("md:hidden rounded-xl px-3 py-2 text-sm font-medium", brand.btn.solid)}
                     >
                         Contact
@@ -191,11 +207,13 @@ const SectionIntro: React.FC = () => {
                     <div className="aspect-[4/3] sm:aspect-[1/1] w-full overflow-hidden rounded-2xl border border-emerald-200/70 bg-white/60">
                         <img
                             src={hero}
-                            alt="Aperçu du voyage Travel GC"
+                            alt="Aperçu du voyage Travel GC - Voyage d'étude des étudiant·e·s de Génie Civil EPFL à Budapest"
                             className="h-full w-full object-cover"
                             loading="lazy"
                             decoding="async"
                             sizes="(min-width:1024px) 560px, (min-width:640px) 60vw, 100vw"
+                            width="800"
+                            height="600"
                         />
                     </div>
                 </div>
@@ -239,9 +257,9 @@ const SectionVisits: React.FC = () => (
 
             <div className="grid md:grid-cols-2 gap-6">
                 {visits.map((v) => (
-                    <SectionCard key={v.key}>
+                    <article key={v.key} className={cx("rounded-2xl p-6 md:p-8", brand.card)}>
                         <div className="space-y-3 text-[15px] md:text-base leading-relaxed">
-                            <div className="text-base font-semibold md:text-lg">{v.title}</div>
+                            <h3 className="text-base font-semibold md:text-lg">{v.title}</h3>
                             <p className="text-emerald-900/85">{v.blurb}</p>
                             <div className="overflow-hidden rounded-xl border border-emerald-200/70">
                                 <img
@@ -251,10 +269,12 @@ const SectionVisits: React.FC = () => (
                                     loading="lazy"
                                     decoding="async"
                                     sizes="(min-width:768px) 50vw, 100vw"
+                                    width="800"
+                                    height="600"
                                 />
                             </div>
                         </div>
-                    </SectionCard>
+                    </article>
                 ))}
             </div>
         </div>
@@ -858,11 +878,124 @@ const SectionContact: React.FC = () => {
     );
 };
 
+/* ===================== Données structurées JSON-LD ===================== */
+const StructuredData: React.FC = () => {
+    useEffect(() => {
+        // Organization Schema
+        const organizationSchema = {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Travel GC",
+            "url": "https://travelgc.ch",
+            "logo": "https://travelgc.ch/favicon.svg",
+            "description": "Association étudiante organisant le voyage d'étude des étudiant·e·s de Génie Civil à l'EPFL",
+            "email": "travelgc@epfl.ch",
+            "sameAs": [
+                "https://instagram.com/travel__gc"
+            ],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "travelgc@epfl.ch",
+                "contactType": "Sponsoring",
+                "availableLanguage": "French"
+            }
+        };
+
+        // BreadcrumbList Schema
+        const breadcrumbSchema = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Accueil",
+                    "item": "https://travelgc.ch/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Visites GC",
+                    "item": "https://travelgc.ch/#visites"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Packs sponsoring",
+                    "item": "https://travelgc.ch/#packs"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "Contact",
+                    "item": "https://travelgc.ch/#contact"
+                }
+            ]
+        };
+
+        // Event Schema (pour le voyage d'étude)
+        const eventSchema = {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": "Voyage d'étude Travel GC 2025 - Budapest",
+            "description": "Voyage d'étude des étudiant·e·s de 3e année Bachelor en Génie Civil à l'EPFL à Budapest du 5 au 13 juillet 2025",
+            "startDate": "2025-07-05",
+            "endDate": "2025-07-13",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "location": {
+                "@type": "Place",
+                "name": "Budapest, Hongrie",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Budapest",
+                    "addressCountry": "HU"
+                }
+            },
+            "organizer": {
+                "@type": "Organization",
+                "name": "Travel GC",
+                "url": "https://travelgc.ch"
+            }
+        };
+
+        // Function to inject schema
+        const injectSchema = (schema: object, id: string) => {
+            // Remove existing script if present
+            const existing = document.getElementById(id);
+            if (existing) {
+                existing.remove();
+            }
+
+            const script = document.createElement("script");
+            script.id = id;
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schema);
+            document.head.appendChild(script);
+        };
+
+        injectSchema(organizationSchema, "schema-organization");
+        injectSchema(breadcrumbSchema, "schema-breadcrumb");
+        injectSchema(eventSchema, "schema-event");
+
+        // Cleanup function
+        return () => {
+            ["schema-organization", "schema-breadcrumb", "schema-event"].forEach((id) => {
+                const script = document.getElementById(id);
+                if (script) script.remove();
+            });
+        };
+    }, []);
+
+    return null;
+};
+
 /* ===================== Page ===================== */
 export default function SponsorPage() {
     // Défilement doux (CSS requis côté app : html{scroll-behavior:smooth})
     return (
         <div className={cx("min-h-[100dvh] w-full", brand.bg)}>
+            <StructuredData />
             <Header />
             <main id="main">
                 <Container className="py-6 md:py-10">
@@ -902,18 +1035,21 @@ export default function SponsorPage() {
                                 <nav className="flex flex-col gap-2">
                                     <a
                                         href="#visites"
+                                        onClick={(e) => scrollToId(e, "visites")}
                                         className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
                                     >
                                         Visites GC
                                     </a>
                                     <a
                                         href="#packs"
+                                        onClick={(e) => scrollToId(e, "packs")}
                                         className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
                                     >
                                         Packs sponsoring
                                     </a>
                                     <a
                                         href="#contact"
+                                        onClick={(e) => scrollToId(e, "contact")}
                                         className="text-sm text-emerald-900/80 hover:text-emerald-700 hover:underline underline-offset-4 transition-colors w-fit"
                                     >
                                         Nous contacter

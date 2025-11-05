@@ -1,0 +1,15 @@
+/* TEAM */
+Travel GC - Association étudiante EPFL
+Site: https://travelgc.ch
+Email: travelgc@epfl.ch
+Instagram: @travel__gc
+
+/* THANKS */
+Étudiant·e·s de Génie Civil EPFL
+SmartFlow - Développement web
+
+/* SITE */
+Last update: 2025/01/23
+Language: French
+Standards: HTML5, CSS3, JavaScript ES6+
+
