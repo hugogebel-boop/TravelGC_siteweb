@@ -172,7 +172,7 @@ const SectionIntro: React.FC = () => {
                     <p className="mt-4 text-emerald-900/85 leading-relaxed text-[15px] md:text-base">
                         Nous organisons le voyage d’étude des étudiant·e·s de{" "}
                         <b>3e année Bachelor en Génie Civil</b> à l’EPFL. Du{" "}
-                        <b>5 au 13 juillet 2025</b>, notre destination sera <b>Budapest</b> :
+                        <b>5 au 13 juillet 2026</b>, notre destination sera <b>Budapest</b> :
                         une ville riche en architecture, en histoire et en ouvrages
                         d’ingénierie.
                     </p>
